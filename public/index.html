@@ -1,0 +1,47 @@
+<html>
+<head>
+	<link rel="stylesheet" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css" />
+</head>
+<body ms-controller="CommonIO">
+	<div class="header">
+		<div class="pure-menu pure-menu-horizontal pure-menu-fixed">
+			
+			<a class="pure-menu-heading">CommonIO</a>
+			<ul class="pure-menu-list">
+				
+				<li class="pure-menu-item"><span ms-if="isIOConnected">Connected</span><span ms-if="!isIOConnected">Disconnected</span></li>
+
+			</ul>
+
+		</div>
+		
+	</div>
+	<div></div>
+	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	<script type="text/javascript" src="//cdn.bootcss.com/avalon.js/1.5.4/avalon.modern.js"></script>
+	<script type="text/javascript">
+
+	window.CommonIO = avalon.define({
+		$id: 'CommonIO',
+
+		isIOConnected: false,
+
+	});
+
+	window.Socket = io();
+
+	Socket.on('connect', function() {
+
+		CommonIO.isIOConnected = true;
+
+	});
+
+	Socket.on('disconnect', function() {
+
+		CommonIO.isIOConnected = false;
+
+	});
+
+	</script>
+</body>
+</html>
