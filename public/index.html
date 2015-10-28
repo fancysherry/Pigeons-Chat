@@ -9,7 +9,12 @@
 			<a class="pure-menu-heading">CommonIO</a>
 			<ul class="pure-menu-list">
 				
-				<li class="pure-menu-item"><span ms-if="isIOConnected">Connected</span><span ms-if="!isIOConnected">Disconnected</span></li>
+				<li class="pure-menu-item" ms-attr-title="sessionId"><span ms-if="isIOConnected">Connected</span><span ms-if="!isIOConnected">Disconnected</span></li>
+				<li class="pure-menu-item"><a href="javascript:void(0)" ms-click="register()">Register</a></li>
+				<li class="pure-menu-item"><a href="javascript:void(0)" ms-click="login()">Login</a></li>
+				<li class="pure-menu-item"><a href="javascript:void(0)" ms-click="profile()">Profile</a></li>
+				<li class="pure-menu-item"><a href="javascript:void(0)" ms-click="profileEdit()">ProfileEdit: {{ description }}</a></li>
+				<li class="pure-menu-item"><a href="javascript:void(0)" ms-click="userSearch()">UserSearch</a></li>
 
 			</ul>
 
@@ -26,6 +31,73 @@
 
 		isIOConnected: false,
 
+		sessionId: '',
+
+		username: '',
+		nickname: '',
+		description: '',
+		avatarUrl: '',
+
+		register: function() {
+
+			Socket.emit('register', {
+
+				sessionId: CommonIO.sessionId,
+				username: 'username',
+				password: 'password',
+				nickname: 'Username',
+
+			});
+
+		},
+
+		login: function() {
+
+			Socket.emit('login', {
+
+				sessionId: CommonIO.sessionId,
+				username: 'username',
+				password: 'password',
+
+			});
+
+		},
+
+		profile: function() {
+
+			Socket.emit('profile.get', {
+
+				sessionId: CommonIO.sessionId,
+				username: 'username',
+
+			});
+
+		},
+
+		profileEdit: function() {
+
+			Socket.emit('profile.edit', {
+
+				sessionId: CommonIO.sessionId,
+				username: CommonIO.username,
+				nickname: CommonIO.nickname,
+				description: '' + Date.now(),
+
+			});
+
+		},
+
+		userSearch: function() {
+
+			Socket.emit('user.search', {
+
+				sessionId: CommonIO.sessionId,
+				pattern: 'na',
+
+			});
+
+		},
+
 	});
 
 	window.Socket = io();
@@ -39,6 +111,82 @@
 	Socket.on('disconnect', function() {
 
 		CommonIO.isIOConnected = false;
+
+	});
+
+	Socket.on('session', function(data) {
+
+		if(data.err) {
+
+			alert(data.err);
+
+		}
+		else {
+
+			CommonIO.sessionId = data.sessionId;
+
+		}
+
+	});
+
+	Socket.on('register', function(data) {
+
+		console.log(data);
+
+		if(data.err) {
+
+			alert(data.err);
+
+		}
+		else {
+
+			alert('Register succeeded.');
+
+		}
+
+	});
+
+	Socket.on('login', function(data) {
+
+		console.log(data);
+
+		if(data.err) {
+
+			alert(data.err);
+
+		}
+		else {
+
+			alert('Login succeeded.');
+
+		}
+
+	});
+
+	Socket.on('user.search', function(data) {
+
+		console.log(data);
+
+	});
+
+	Socket.on('profile.get', function(data) {
+
+		console.log(data);
+
+		CommonIO.username = data.username;
+		CommonIO.nickname = data.nickname;
+		CommonIO.description = data.description;
+		CommonIO.avatarUrl = data.avatarUrl;
+
+	});
+
+	Socket.on('profile.edit', function(data) {
+
+		console.log(data);
+
+		CommonIO.username = data.username;
+		CommonIO.nickname = data.nickname;
+		CommonIO.description = data.description;
 
 	});
 
