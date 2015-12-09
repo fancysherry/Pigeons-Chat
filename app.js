@@ -19,7 +19,7 @@ function Validate(data, types, failback) {
 
 		if(typeof(data[key]) != types[key]) {
 
-			failback('ERROR_TYPE_NOT_MATCH');
+			failback('ERROR_TYPE_NOT_MATCH: ' + key);
 			return false;
 
 		}
@@ -134,11 +134,22 @@ io.on('connection', function(socket) {
 
 		}
 
-		var user = Database.AddUser({
-			username: data.username,
-			password: data.password,
-			nickname: data.nickname,
-		});
+		try {
+
+			var user = Database.AddUser({
+				username: data.username,
+				password: data.password,
+				nickname: data.nickname,
+			});
+
+		}
+		catch(err) {
+
+			return socket.emit('register', {
+				err: err,
+			});
+
+		}
 
 		logger.info(user);
 
@@ -257,7 +268,6 @@ io.on('connection', function(socket) {
 
 		if(!Validate(data, {
 			sessionId: 'string',
-			username: 'string',
 		}, function(err) {
 
 			socket.emit('profile.get', {
@@ -266,7 +276,11 @@ io.on('connection', function(socket) {
 
 		})) return;
 
-		var user = Database.FindUser(data.username);
+		var username = data.username ? data.username : session.username;
+
+		console.log(username);
+
+		var user = Database.FindUser(username);
 
 		if(!user) {
 

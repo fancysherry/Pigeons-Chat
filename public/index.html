@@ -1,27 +1,43 @@
 <html>
 <head>
-	<link rel="stylesheet" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css" />
 </head>
 <body ms-controller="CommonIO">
-	<div class="header">
-		<div class="pure-menu pure-menu-horizontal pure-menu-fixed">
-			
-			<a class="pure-menu-heading">CommonIO</a>
-			<ul class="pure-menu-list">
-				
-				<li class="pure-menu-item" ms-attr-title="sessionId"><span ms-if="isIOConnected">Connected</span><span ms-if="!isIOConnected">Disconnected</span></li>
-				<li class="pure-menu-item"><a href="javascript:void(0)" ms-click="register()">Register</a></li>
-				<li class="pure-menu-item"><a href="javascript:void(0)" ms-click="login()">Login</a></li>
-				<li class="pure-menu-item"><a href="javascript:void(0)" ms-click="profile()">Profile</a></li>
-				<li class="pure-menu-item"><a href="javascript:void(0)" ms-click="profileEdit()">ProfileEdit: {{ description }}</a></li>
-				<li class="pure-menu-item"><a href="javascript:void(0)" ms-click="userSearch()">UserSearch</a></li>
+	<div>
 
-			</ul>
+		<div id="profile">
+
+			<p>SessionId: {{ sessionId }}</p>
+			<p>Username: {{ username }}</p>
+			<p>Nickname: {{ nickname }}</p>
+			<p>Description: {{ description }}</p>
+			<p><img ms-attr-src="avatarUrl" /></p>
+
+			<button type="button" ms-click="GetMyProfile">GetMyProfile</button>
 
 		</div>
-		
+
 	</div>
-	<div></div>
+	<div>
+
+		<div ms-controller="Portal" ms-visible="!isHidden">
+
+			<label>Username: <input type="text" ms-duplex="username" /></label>
+			<label>Password: <input type="text" ms-duplex="password" /></label>
+			<label>Nickname: <input type="text" ms-duplex="nickname" /></label>
+
+			<button type="button" ms-click="Login">Login</button>
+			<button type="button" ms-click="Register">Register</button>
+
+		</div>
+
+		<div ms-controller="UserSearch">
+
+			<label>Pattern: <input type="text" ms-duplex="pattern" /></label>
+			<button type="button" ms-click="SearchUser">SearchUser</button>
+
+		</div>
+
+	</div>
 	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 	<script type="text/javascript" src="//cdn.bootcss.com/avalon.js/1.5.4/avalon.modern.js"></script>
 	<script type="text/javascript">
@@ -38,43 +54,17 @@
 		description: '',
 		avatarUrl: '',
 
-		register: function() {
-
-			Socket.emit('register', {
-
-				sessionId: CommonIO.sessionId,
-				username: 'username',
-				password: 'password',
-				nickname: 'Username',
-
-			});
-
-		},
-
-		login: function() {
-
-			Socket.emit('login', {
-
-				sessionId: CommonIO.sessionId,
-				username: 'username',
-				password: 'password',
-
-			});
-
-		},
-
-		profile: function() {
+		GetMyProfile: function() {
 
 			Socket.emit('profile.get', {
 
 				sessionId: CommonIO.sessionId,
-				username: 'username',
 
 			});
 
 		},
 
-		profileEdit: function() {
+		EditProfile: function() {
 
 			Socket.emit('profile.edit', {
 
@@ -88,18 +78,69 @@
 
 		userSearch: function() {
 
-			Socket.emit('user.search', {
-
-				sessionId: CommonIO.sessionId,
-				pattern: 'na',
-
-			});
-
 		},
 
 	});
 
-	window.Socket = io();
+    window.Portal = avalon.define({
+
+        $id: 'Portal',
+
+        username: '',
+        password: '',
+        nickname: '',
+
+        isHidden: false,
+
+        Login: function() {
+
+            Socket.emit('login', {
+
+                sessionId: CommonIO.sessionId,
+                username: Portal.username,
+                password: Portal.password,
+
+            });
+
+        },
+
+        Register: function() {
+
+            Socket.emit('register', {
+
+                sessionId: CommonIO.sessionId,
+                username: Portal.username,
+                password: Portal.password,
+                nickname: Portal.nickname,
+
+            });
+
+        },
+
+    });
+
+    window.UserSearch = avalon.define({
+
+        $id: 'UserSearch',
+
+        pattern: '',
+
+        isHidden: false,
+
+        SearchUser: function() {
+
+            Socket.emit('user.search', {
+
+                sessionId: CommonIO.sessionId,
+                pattern: UserSearch.pattern,
+
+            });
+
+        },
+
+    });
+
+    window.Socket = io();
 
 	Socket.on('connect', function() {
 
@@ -157,6 +198,7 @@
 		else {
 
 			alert('Login succeeded.');
+			Portal.isHidden = true;
 
 		}
 
