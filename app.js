@@ -1,4 +1,6 @@
 
+'use strict';
+
 var log4js = require('log4js');
 log4js.configure({
 	appenders: [
@@ -39,7 +41,7 @@ function Session(socket, data) {
 
 	var session = null;
 
-	if(data.sessionId == '' || !(data.sessionId in Sessions)) {
+	if(!data.sessionId || !(data.sessionId in Sessions)) {
 
 		// New session.
 		session = {
@@ -72,21 +74,11 @@ function Session(socket, data) {
 
 }
 
-function AuthorizeProfileEdit(session, username, failback) {
+function AuthorizeProfileEdit(session, callback) {
 
-	if(!session) {
+	if(!session.username) {
 
-		failback('ERROR_SESSION_NOT_FOUND');
-		return false;
-
-	}
-
-	console.log(session);
-	console.log(username);
-
-	if(session.username != username) {
-
-		failback('ERROR_PERMISSION_DENIED');
+		callback('ERROR_SESSION_NOT_LOGIN');
 		return false;
 
 	}
@@ -107,6 +99,8 @@ io.on('connection', function(socket) {
 
 	logger.info('User connected.');
 
+	Session(socket, {});
+
 	socket.on('disconnect', function() {
 
 		logger.info('User disconnected.');
@@ -114,6 +108,8 @@ io.on('connection', function(socket) {
 	});
 
 	socket.on('register', function(data) {
+
+		var session = Session(socket, data);
 
 		if(!Validate(data, {
 			sessionId: 'string',
@@ -127,8 +123,6 @@ io.on('connection', function(socket) {
 			});
 
 		})) return;
-
-		var session = Session(socket, data);
 
 		//logger.info(Database.FindUser(data.username));
 
@@ -156,6 +150,8 @@ io.on('connection', function(socket) {
 
 	socket.on('login', function(data) {
 
+		var session = Session(socket, data);
+
 		if(!Validate(data, {
 			sessionId: 'string',
 			username: 'string',
@@ -167,8 +163,6 @@ io.on('connection', function(socket) {
 			});
 
 		})) return;
-
-		var session = Session(socket, data);
 
 		//logger.info(Database.MatchUser(data.username, data.password));
 
@@ -190,6 +184,8 @@ io.on('connection', function(socket) {
 
 	socket.on('user.search', function(data) {
 
+		var session = Session(socket, data);
+
 		if(!Validate(data, {
 			sessionId: 'string',
 			pattern: 'string',
@@ -201,8 +197,6 @@ io.on('connection', function(socket) {
 
 		})) return;
 
-		var session = Session(socket, data);
-
 		var users = Database.SearchUser(data.pattern);
 
 		console.log(users);
@@ -211,9 +205,10 @@ io.on('connection', function(socket) {
 		r.err = null;
 		r.users = [];
 
-		for(user in users) {
+		for(let user of users) {
 
 			r.users.push({
+				username: user.username,
 				nickname: user.nickname,
 				description: user.description,
 			});
@@ -226,6 +221,8 @@ io.on('connection', function(socket) {
 
 	socket.on('contact.add', function(data) {
 
+		var session = Session(socket, data);
+
 		if(!Validate(data, {
 			sessionId: 'string',
 			username: 'string',
@@ -236,8 +233,6 @@ io.on('connection', function(socket) {
 			});
 
 		})) return;
-
-		var session = Session(socket, data);
 
 		if(!Database.FindUser(data.username)) {
 
@@ -258,6 +253,8 @@ io.on('connection', function(socket) {
 
 	socket.on('profile.get', function(data) {
 
+		var session = Session(socket, data);
+
 		if(!Validate(data, {
 			sessionId: 'string',
 			username: 'string',
@@ -268,8 +265,6 @@ io.on('connection', function(socket) {
 			});
 
 		})) return;
-
-		var session = Session(socket, data);
 
 		var user = Database.FindUser(data.username);
 
@@ -293,9 +288,10 @@ io.on('connection', function(socket) {
 
 	socket.on('profile.edit', function(data) {
 
+		var session = Session(socket, data);
+
 		if(!Validate(data, {
 			sessionId: 'string',
-			username: 'string',
 			nickname: 'string',
 			description: 'string',
 		}, function(err) {
@@ -306,9 +302,7 @@ io.on('connection', function(socket) {
 
 		})) return;
 
-		var session = Session(socket, data);
-
-		if(!AuthorizeProfileEdit(session, data.username, function(err) {
+		if(!AuthorizeProfileEdit(session, function(err) {
 
 			return socket.emit('profile.edit', {
 				err: err
@@ -316,7 +310,7 @@ io.on('connection', function(socket) {
 
 		})) return;
 
-		var user = Database.FindUser(data.username);
+		var user = Database.FindUser(session.username);
 
 		if(!user) {
 
@@ -333,7 +327,6 @@ io.on('connection', function(socket) {
 
 		return socket.emit('profile.edit', {
 			err: null,
-			username: user.username,
 			nickname: user.nickname,
 			description: user.description,
 		});
@@ -349,3 +342,30 @@ http.listen(8100, function() {
 	logger.info('HTTP server is listening at :8100.');
 
 });
+
+/*
+
+process.stdin.resume();
+
+process.on('exit', function() {
+
+	//Database.Save();
+
+});
+
+process.on('SIGINT', function() {
+
+	process.exit(1);
+
+});
+
+process.on('uncaughtException', function(err) {
+
+	var logger = log4js.getLogger();
+
+	logger.error(err.stack);
+	process.exit(1);
+
+});
+
+*/

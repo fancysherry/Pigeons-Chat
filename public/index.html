@@ -79,7 +79,6 @@
 			Socket.emit('profile.edit', {
 
 				sessionId: CommonIO.sessionId,
-				username: CommonIO.username,
 				nickname: CommonIO.nickname,
 				description: '' + Date.now(),
 
@@ -184,7 +183,6 @@
 
 		console.log(data);
 
-		CommonIO.username = data.username;
 		CommonIO.nickname = data.nickname;
 		CommonIO.description = data.description;
 
