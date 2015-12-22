@@ -87,6 +87,19 @@ function AuthorizeProfileEdit(session, callback) {
 
 }
 
+function AuthorizeContactAdd(session, callback) {
+
+	if(!session.username) {
+
+		callback('ERROR_SESSION_NOT_LOGIN');
+		return false;
+
+	}
+
+	return true;
+
+}
+
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
@@ -245,6 +258,14 @@ io.on('connection', function(socket) {
 
 		})) return;
 
+		if(!AuthorizeContactAdd(session, function(err) {
+
+			return socket.emit('contact.add', {
+				err: err
+			});
+
+		})) return;
+
 		if(!Database.FindUser(data.username)) {
 
 			return socket.emit('contact.add', {
@@ -252,6 +273,10 @@ io.on('connection', function(socket) {
 			});
 
 		}
+
+		Database.AddContact(session.username, data.username);
+
+		return socket.emit('contact.add', { err: null });
 
 	});
 
@@ -344,6 +369,31 @@ io.on('connection', function(socket) {
 			nickname: user.nickname,
 			description: user.description,
 		});
+
+	});
+
+	socket.on('chat', function(data) {
+
+		var session = Session(socket, data);
+
+		if(!Validate(data, {
+			sessionId: 'string',
+			to: 'string',
+		}, function(err) {
+
+			return socket.emit('chat', {
+				err: err
+			});
+
+		})) return;
+
+		if(!AuthorizeProfileEdit(session, function(err) {
+
+			return socket.emit('profile.edit', {
+				err: err
+			});
+
+		})) return;
 
 	});
 
