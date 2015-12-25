@@ -1,6 +1,4 @@
 
-'use strict';
-
 var log4js = require('log4js');
 log4js.configure({
 	appenders: [
@@ -12,6 +10,8 @@ log4js.configure({
 var express = require('express');
 
 var Database = require('./lib/database.js');
+
+var Util = require('./lib/util');
 
 function Validate(data, types, failback) {
 
@@ -137,37 +137,28 @@ io.on('connection', function(socket) {
 
 		})) return;
 
-		//logger.info(Database.FindUser(data.username));
+		Util.Flow(function*(cb) {
 
-		if(Database.FindUser(data.username)) {
-
-			return socket.emit('register', {
+			if((yield Database.FindUser(data.username, cb))[1]) return socket.emit('register', {
 				err: 'ERROR_USERNAME_EXISTS',
 			});
 
-		}
-
-		try {
-
-			var user = Database.AddUser({
+			var [err, user] = yield Database.AddUser({
 				username: data.username,
 				password: data.password,
 				nickname: data.nickname,
-			});
+			}, cb);
 
-		}
-		catch(err) {
-
-			return socket.emit('register', {
+			if(err)	return socket.emit('register', {
 				err: err,
 			});
 
-		}
+			logger.info(user);
 
-		logger.info(user);
+			return socket.emit('register', {
+				err: null,
+			});
 
-		return socket.emit('register', {
-			err: null,
 		});
 
 	});
@@ -188,20 +179,20 @@ io.on('connection', function(socket) {
 
 		})) return;
 
-		//logger.info(Database.MatchUser(data.username, data.password));
+		Util.Flow(function*(cb) {
 
-		if(!Database.MatchUser(data.username, data.password)) {
-
-			return socket.emit('login', {
+			if(!(yield Database.AuthorizeUser(data.username, data.password, cb))[1]) return socket.emit('login', {
 				err: 'ERROR_LOGIN_FAILED',
 			});
 
-		}
+			session.username = data.username;
 
-		session.username = data.username;
+			logger.info(session);
 
-		return socket.emit('login', {
-			err: null,
+			return socket.emit('login', {
+				err: null,
+			});
+
 		});
 
 	});
@@ -221,28 +212,37 @@ io.on('connection', function(socket) {
 
 		})) return;
 
-		var users = Database.SearchUser(data.pattern);
+		Util.Flow(function*(cb) {
 
-		console.log(users);
+			var [err, users] = yield Database.SearchUser(data.pattern, cb);
 
-		var r = {};
-		r.err = null;
-		r.users = [];
-
-		for(let user of users) {
-
-			r.users.push({
-				username: user.username,
-				nickname: user.nickname,
-				description: user.description,
+			if(err) return socket.emit('user.search', {
+				err: err
 			});
 
-		}
+			console.log(users);
 
-		return socket.emit('user.search', r);
+			var r = {};
+			r.err = null;
+			r.users = [];
+
+			for(var user of users) {
+
+				r.users.push({
+					username: user.username,
+					nickname: user.nickname,
+					description: user.description,
+				});
+
+			}
+
+			return socket.emit('user.search', r);
+
+		});
 
 	});
 
+	/*
 	socket.on('contact.add', function(data) {
 
 		var session = Session(socket, data);
@@ -258,27 +258,36 @@ io.on('connection', function(socket) {
 
 		})) return;
 
-		if(!AuthorizeContactAdd(session, function(err) {
+		Util.Flow(function*(cb) {
 
-			return socket.emit('contact.add', {
-				err: err
+			if(!AuthorizeContactAdd(session, function(err) {
+
+				return socket.emit('contact.add', {
+					err: err
+				});
+
+			})) return;
+
+			var [err, user] = yield Database.FindUser(data.username, cb);
+			if(err) return socket.emit('contact.add', {
+				err: err,
 			});
 
-		})) return;
-
-		if(!Database.FindUser(data.username)) {
-
-			return socket.emit('contact.add', {
+			if(!user) return socket.emit('contact.add', {
 				err: 'ERROR_USER_NOT_FOUND',
 			});
 
-		}
+			var [err] = yield Database.AddContact(session.username, data.username, cb);
+			if(err) return socket.emit('contact.add', {
+				err: err,
+			});
 
-		Database.AddContact(session.username, data.username);
+			return socket.emit('contact.add', { err: null });
 
-		return socket.emit('contact.add', { err: null });
+		});
 
 	});
+	*/
 
 	/*
 	// Unused.
@@ -301,30 +310,37 @@ io.on('connection', function(socket) {
 
 		})) return;
 
-		var username = data.username ? data.username : session.username;
+		Util.Flow(function*(cb) {
 
-		console.log(username);
-
-		var user = Database.FindUser(username);
-
-		if(!user) {
-
-			return socket.emit('profile.get', {
-				err: 'ERROR_USER_NOT_FOUND',
+			var username = data.username ? data.username : session.username;
+			if(!username) return socket.emit('profile.get', {
+				err: 'ERROR_USERNAME_INVALID'
 			});
 
-		}
+			console.log(username);
 
-		return socket.emit('profile.get', {
-			err: null,
-			username: user.username,
-			nickname: user.nickname,
-			description: user.description,
-			avatarUrl: user.avatarUrl,
+			var [err, user] = yield Database.FindUser(username, cb);
+			if(err) return socket.emit('profile.get', {
+				err: err
+			});
+
+			if(!user) return socket.emit('profile.get', {
+				err: 'ERROR_USER_NOT_FOUND'
+			});
+
+			return socket.emit('profile.get', {
+				err: null,
+				username: user.username,
+				nickname: user.nickname,
+				description: user.description,
+				avatarUrl: user.avatarUrl,
+			});
+
 		});
 
 	});
 
+	// TODO:
 	socket.on('profile.edit', function(data) {
 
 		var session = Session(socket, data);
@@ -341,37 +357,41 @@ io.on('connection', function(socket) {
 
 		})) return;
 
-		if(!AuthorizeProfileEdit(session, function(err) {
+		Util.Flow(function*(cb) {
 
-			return socket.emit('profile.edit', {
+			if(!AuthorizeProfileEdit(session, function(err) {
+
+				return socket.emit('profile.edit', {
+					err: err
+				});
+
+			})) return;
+
+			var [err, user] = yield Database.FindUser(session.username, cb);
+			if(err) return socket.emit('profile.edit', {
 				err: err
 			});
 
-		})) return;
-
-		var user = Database.FindUser(session.username);
-
-		if(!user) {
-
-			return socket.emit('profile.edit', {
-				err: 'ERROR_USER_NOT_FOUND',
+			if(!user) return socket.emit('profile.edit', {
+				err: 'ERROR_USER_NOT_FOUND'
 			});
 
-		}
+			user.nickname = data.nickname;
+			user.description = data.description;
 
-		user.nickname = data.nickname;
-		user.description = data.description;
+			yield user.save(cb);
 
-		Database.Save();
+			return socket.emit('profile.edit', {
+				err: null,
+				nickname: user.nickname,
+				description: user.description,
+			});
 
-		return socket.emit('profile.edit', {
-			err: null,
-			nickname: user.nickname,
-			description: user.description,
 		});
 
 	});
 
+	/*
 	socket.on('chat', function(data) {
 
 		var session = Session(socket, data);
@@ -387,15 +407,8 @@ io.on('connection', function(socket) {
 
 		})) return;
 
-		if(!AuthorizeProfileEdit(session, function(err) {
-
-			return socket.emit('profile.edit', {
-				err: err
-			});
-
-		})) return;
-
 	});
+	*/
 
 });
 
