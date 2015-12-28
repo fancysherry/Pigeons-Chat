@@ -32,8 +32,14 @@
 
 		<div ms-controller="UserSearch">
 
-			<label>Pattern: <input type="text" ms-duplex="pattern" /></label>
-			<button type="button" ms-click="SearchUser">SearchUser</button>
+			<div>
+				<label>Pattern: <input type="text" ms-duplex="pattern" /></label>
+				<button type="button" ms-click="SearchUser">SearchUser</button>
+			</div>
+
+			<ul>
+				<li ms-repeat="users">{{ el.nickname }}: @{{ el.username }}</li>
+			</ul>
 
 		</div>
 
@@ -124,6 +130,7 @@
         $id: 'UserSearch',
 
         pattern: '',
+        users: [],
 
         isHidden: false,
 
@@ -207,6 +214,7 @@
 	Socket.on('user.search', function(data) {
 
 		console.log(data);
+		UserSearch.users = data.users;
 
 	});
 
