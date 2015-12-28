@@ -13,6 +13,7 @@
 			<p><img ms-attr-src="avatarUrl" /></p>
 
 			<button type="button" ms-click="GetMyProfile">GetMyProfile</button>
+			<button type="button" ms-click="UpdateMyProfile">UpdateMyProfile</button>
 
 		</div>
 
@@ -43,6 +44,20 @@
 
 		</div>
 
+		<div ms-controller="Chat">
+			
+			<ul>
+				<li ms-repeat="messages">{{ el.from }}: {{ el.message }}</li>
+			</ul>
+
+			<div>
+				<label>To: <input type="text" ms-duplex="to" /></label>
+				<label>Message: <textarea type="text" ms-duplex="message"></textarea></label>
+				<button type="button" ms-click="Send">Send</button>
+			</div>
+
+		</div>
+
 	</div>
 	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 	<script type="text/javascript" src="//cdn.bootcss.com/avalon.js/1.5.4/avalon.modern.js"></script>
@@ -70,7 +85,7 @@
 
 		},
 
-		EditProfile: function() {
+		UpdateMyProfile: function() {
 
 			Socket.emit('profile.edit', {
 
@@ -79,10 +94,6 @@
 				description: '' + Date.now(),
 
 			});
-
-		},
-
-		userSearch: function() {
 
 		},
 
@@ -144,6 +155,30 @@
             });
 
         },
+
+    });
+
+    window.Chat = avalon.define({
+
+    	$id: 'Chat',
+
+    	to: '',
+    	message: '',
+    	messages: [],
+
+    	isHidden: false,
+
+    	Send: function() {
+
+            Socket.emit('chat', {
+
+                sessionId: CommonIO.sessionId,
+                to: Chat.to,
+                message: Chat.message,
+
+            });
+
+    	},
 
     });
 
@@ -235,6 +270,23 @@
 
 		CommonIO.nickname = data.nickname;
 		CommonIO.description = data.description;
+
+	});
+
+	Socket.on('chat', function(data) {
+
+		console.log(data);
+
+	});
+
+	Socket.on('message', function(data) {
+
+		console.log(data);
+
+		Chat.messages.push({
+			from: data.from,
+			message: data.message,
+		});
 
 	});
 

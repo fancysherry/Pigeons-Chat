@@ -176,6 +176,34 @@ When a client connects and the server can't associate it with existing sessions,
 
 
 
+### chat on Server
+
+| Type   | Name        | Comment |
+| ------ | ----------- | ------- |
+| string | sessionId   |         |
+| string | from        |         |
+| string | message     |         |
+
+The client emits this event when he sends message to other user.
+
+### chat on Client
+
+| Type   | Name | Comment |
+| ------ | ---- | ------- |
+| string | err  |         |
+
+
+
+### message on Client
+
+| Type   | Name        | Comment |
+| ------ | ----------- | ------- |
+| string | err         |         |
+| string | to          |         |
+| string | message     |         |
+
+The client receives this event when someone sends message to him.
+
 ## The MIT License
 
 Copyright (c) 2015 evshiron

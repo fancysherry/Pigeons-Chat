@@ -31,6 +31,7 @@ function Validate(data, types, failback) {
 }
 
 var Sessions = {};
+var OnlineUsers = {};
 
 function Session(socket, data) {
 
@@ -69,6 +70,15 @@ function Session(socket, data) {
 	//logger.debug(session);
 
 	session.lastUpdated = Date.now();
+	session.socket = socket;
+
+	if(session.username && !OnlineUsers[session.username]) {
+
+		OnlineUsers[session.username] = session;
+
+		console.log('User ' + session.username + ' online.');
+
+	}
 
 	return session;
 
@@ -100,6 +110,19 @@ function AuthorizeContactAdd(session, callback) {
 
 }
 
+function AuthorizeChat(session, callback) {
+
+	if(!session.username) {
+
+		callback('ERROR_SESSION_NOT_LOGIN');
+		return false;
+
+	}
+
+	return true;
+
+}
+
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
@@ -112,11 +135,20 @@ io.on('connection', function(socket) {
 
 	logger.info('User connected.');
 
-	Session(socket, {});
+	var session = Session(socket, {});
 
 	socket.on('disconnect', function() {
 
 		logger.info('User disconnected.');
+
+		if(session.username && OnlineUsers[session.username]) {
+
+			OnlineUsers[session.username] = null;
+			session.username = null;
+
+			console.log('User ' + session.username + ' offline.');
+
+		}
 
 	});
 
@@ -187,7 +219,9 @@ io.on('connection', function(socket) {
 
 			session.username = data.username;
 
-			logger.info(session);
+			//logger.info(session);
+
+			var session = Session(socket, data);
 
 			return socket.emit('login', {
 				err: null,
@@ -391,7 +425,6 @@ io.on('connection', function(socket) {
 
 	});
 
-	/*
 	socket.on('chat', function(data) {
 
 		var session = Session(socket, data);
@@ -399,6 +432,7 @@ io.on('connection', function(socket) {
 		if(!Validate(data, {
 			sessionId: 'string',
 			to: 'string',
+			message: 'string',
 		}, function(err) {
 
 			return socket.emit('chat', {
@@ -407,8 +441,33 @@ io.on('connection', function(socket) {
 
 		})) return;
 
+		Util.Flow(function*(cb) {
+
+			if(!AuthorizeChat(session, function(err) {
+
+				return socket.emit('chat', {
+					err: err
+				});
+
+			})) return;
+
+			if(!OnlineUsers[data.to]) return socket.emit('chat', {
+				err: 'ERROR_USER_OFFLINE'
+			});
+
+			OnlineUsers[data.to].socket.emit('message', {
+				err: null,
+				from: session.username,
+				message: data.message,
+			});
+
+			return socket.emit('chat', {
+				err: null
+			});
+
+		});
+
 	});
-	*/
 
 });
 
