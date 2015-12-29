@@ -221,7 +221,7 @@ io.on('connection', function(socket) {
 
 			//logger.info(session);
 
-			var session = Session(socket, data);
+			Session(socket, data);
 
 			return socket.emit('login', {
 				err: null,
