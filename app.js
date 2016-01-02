@@ -42,7 +42,7 @@ function Session(socket, data) {
 
 	var session = null;
 
-	if(!data.sessionId || !(data.sessionId in Sessions)) {
+	if(!data.sessionId || !(data.sessionId in Sessions) || !Sessions[data.sessionId]) {
 
 		// New session.
 		session = {
@@ -144,6 +144,7 @@ io.on('connection', function(socket) {
 		if(session.username && OnlineUsers[session.username]) {
 
 			OnlineUsers[session.username] = null;
+			delete OnlineUsers[session.username];
 			session.username = null;
 
 			console.log('User ' + session.username + ' offline.');
@@ -266,6 +267,7 @@ io.on('connection', function(socket) {
 					username: user.username,
 					nickname: user.nickname,
 					description: user.description,
+					avatarUrl: user.avatarUrl,
 				});
 
 			}
@@ -276,7 +278,6 @@ io.on('connection', function(socket) {
 
 	});
 
-	/*
 	socket.on('contact.add', function(data) {
 
 		var session = Session(socket, data);
@@ -311,6 +312,8 @@ io.on('connection', function(socket) {
 				err: 'ERROR_USER_NOT_FOUND',
 			});
 
+			// FIXME: Can't use `var err = ` or `err = { 0: null }`.
+			// This seems to be an issue with `Util.Flow`, or destructuring.
 			var [err] = yield Database.AddContact(session.username, data.username, cb);
 			if(err) return socket.emit('contact.add', {
 				err: err,
@@ -321,7 +324,6 @@ io.on('connection', function(socket) {
 		});
 
 	});
-	*/
 
 	/*
 	// Unused.

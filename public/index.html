@@ -39,7 +39,7 @@
 			</div>
 
 			<ul>
-				<li ms-repeat="users">{{ el.nickname }}: @{{ el.username }}</li>
+				<li ms-repeat="users">{{ el.nickname }}: @{{ el.username }}<button type="button" ms-click="AddContact(el.username)">AddContact</button></li>
 			</ul>
 
 		</div>
@@ -156,6 +156,17 @@
 
         },
 
+		AddContact: function(username) {
+
+			Socket.emit('contact.add', {
+
+				sessionId: CommonIO.sessionId,
+				username: username,
+
+			});
+
+		}
+
     });
 
     window.Chat = avalon.define({
@@ -250,6 +261,12 @@
 
 		console.log(data);
 		UserSearch.users = data.users;
+
+	});
+
+	Socket.on('contact.add', function(data) {
+
+		console.log(data);
 
 	});
 
