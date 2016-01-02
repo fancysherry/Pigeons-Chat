@@ -226,7 +226,90 @@ io.on('connection', function(socket) {
 
 			return socket.emit('login', {
 				err: null,
+				username: session.username,
 			});
+
+		});
+
+	});
+
+	socket.on('contacts', function(data) {
+
+		var session = Session(socket, data);
+
+		if(!Validate(data, {
+					sessionId: 'string',
+				}, function(err) {
+
+					return socket.emit('contacts', {
+						err: err
+					});
+
+				})) return;
+
+		Util.Flow(function*(cb) {
+
+			var [err, user] = yield Database.FindUser(session.username, cb);
+			if(err) return socket.emit('contacts', {
+				err: err,
+			});
+
+			if(!user) return socket.emit('contacts', {
+				err: 'ERROR_USER_NOT_FOUND',
+			});
+
+			var r = {};
+			r.err = null;
+			r.contacts = [];
+
+			for(var username of user.contactUsernames) {
+
+				r.contacts.push(username);
+
+			}
+
+			return socket.emit('contacts', r);
+
+		});
+
+	});
+
+	socket.on('groups', function(data) {
+
+		var session = Session(socket, data);
+
+		if(!Validate(data, {
+			sessionId: 'string',
+		}, function(err) {
+
+			return socket.emit('groups', {
+				err: err
+			});
+
+		})) return;
+
+		Util.Flow(function*(cb) {
+
+			var [err, user] = yield Database.FindUser(session.username, cb);
+			if(err) return socket.emit('groups', {
+				err: err,
+			});
+
+			if(!user) return socket.emit('groups', {
+				err: 'ERROR_USER_NOT_FOUND',
+			});
+
+			var r = {};
+			r.err = null;
+			r.groups = [];
+
+			for(var gid of user.groupIds) {
+
+				r.groups.push(gid);
+
+			}
+
+			return socket.emit('groups', r);
 
 		});
 
@@ -325,12 +408,49 @@ io.on('connection', function(socket) {
 
 	});
 
-	/*
-	// Unused.
 	socket.on('group.search', function(data) {
 
+		var session = Session(socket, data);
+
+		if(!Validate(data, {
+			sessionId: 'string',
+			pattern: 'string',
+		}, function(err) {
+
+			return socket.emit('group.search', {
+				err: err
+			});
+
+		})) return;
+
+		Util.Flow(function*(cb) {
+
+			var [err, groups] = yield Database.SearchGroup(data.pattern, cb);
+
+			if(err) return socket.emit('group.search', {
+				err: err
+			});
+
+			console.log(groups);
+
+			var r = {};
+			r.err = null;
+			r.groups = [];
+
+			for(var group of groups) {
+
+				r.groups.push({
+					gid: group.gid,
+					groupname: user.groupname,
+				});
+
+			}
+
+			return socket.emit('group.search', r);
+
+		});
+
 	});
-	*/
 
 	socket.on('profile.get', function(data) {
 
@@ -353,7 +473,7 @@ io.on('connection', function(socket) {
 				err: 'ERROR_USERNAME_INVALID'
 			});
 
-			console.log(username);
+			//console.log(username);
 
 			var [err, user] = yield Database.FindUser(username, cb);
 			if(err) return socket.emit('profile.get', {

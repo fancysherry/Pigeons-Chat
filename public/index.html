@@ -12,6 +12,14 @@
 			<p>Description: {{ description }}</p>
 			<p><img ms-attr-src="avatarUrl" /></p>
 
+			<ul>
+				<li ms-repeat="contacts">{{ $key }}: {{ $val.nickname }} - {{ $val.description }}</li>
+			</ul>
+
+			<ul>
+				<li ms-repeat="groups">{{ $key }}: {{ $val.gid }} - {{ $val.groupname }}</li>
+			</ul>
+
 			<button type="button" ms-click="GetMyProfile">GetMyProfile</button>
 			<button type="button" ms-click="UpdateMyProfile">UpdateMyProfile</button>
 
@@ -40,6 +48,19 @@
 
 			<ul>
 				<li ms-repeat="users">{{ el.nickname }}: @{{ el.username }}<button type="button" ms-click="AddContact(el.username)">AddContact</button></li>
+			</ul>
+
+		</div>
+
+		<div ms-controller="GroupSearch">
+
+			<div>
+				<label>Pattern: <input type="text" ms-duplex="pattern" /></label>
+				<button type="button" ms-click="SearchGroup">SearchGroup</button>
+			</div>
+
+			<ul>
+				<li ms-repeat="groups">{{ el.groupname }}: @{{ el.gid }}</li>
 			</ul>
 
 		</div>
@@ -74,6 +95,45 @@
 		nickname: '',
 		description: '',
 		avatarUrl: '',
+
+		contacts: {
+
+		},
+
+		groups: {
+
+		},
+
+		GetContacts: function() {
+
+			Socket.emit('contacts', {
+
+				sessionId: CommonIO.sessionId,
+
+			});
+
+		},
+
+		GetGroups: function() {
+
+			Socket.emit('groups', {
+
+				sessionId: CommonIO.sessionId,
+
+			});
+
+		},
+
+		GetProfile: function(username) {
+
+			Socket.emit('profile.get', {
+
+				sessionId: CommonIO.sessionId,
+				username: username,
+
+			});
+
+		},
 
 		GetMyProfile: function() {
 
@@ -136,25 +196,25 @@
 
     });
 
-    window.UserSearch = avalon.define({
+	window.UserSearch = avalon.define({
 
-        $id: 'UserSearch',
+		$id: 'UserSearch',
 
-        pattern: '',
-        users: [],
+		pattern: '',
+		users: [],
 
-        isHidden: false,
+		isHidden: false,
 
-        SearchUser: function() {
+		SearchUser: function() {
 
-            Socket.emit('user.search', {
+			Socket.emit('user.search', {
 
-                sessionId: CommonIO.sessionId,
-                pattern: UserSearch.pattern,
+				sessionId: CommonIO.sessionId,
+				pattern: UserSearch.pattern,
 
-            });
+			});
 
-        },
+		},
 
 		AddContact: function(username) {
 
@@ -167,9 +227,31 @@
 
 		}
 
-    });
+	});
 
-    window.Chat = avalon.define({
+	window.GroupSearch = avalon.define({
+
+		$id: 'GroupSearch',
+
+		pattern: '',
+		groups: [],
+
+		isHidden: false,
+
+		SearchGroup: function() {
+
+			Socket.emit('group.search', {
+
+				sessionId: CommonIO.sessionId,
+				pattern: GroupSearch.pattern,
+
+			});
+
+		},
+
+	});
+
+	window.Chat = avalon.define({
 
     	$id: 'Chat',
 
@@ -253,6 +335,57 @@
 			alert('Login succeeded.');
 			Portal.isHidden = true;
 
+			CommonIO.username = data.username;
+
+			CommonIO.GetContacts();
+			CommonIO.GetGroups();
+
+		}
+
+	});
+
+	Socket.on('contacts', function(data) {
+
+		console.log(data);
+
+		for(var it in data.contacts) {
+
+			var username = data.contacts[it];
+
+			var contacts = {};
+			contacts[username] = {
+
+				username: username,
+				nickname: '',
+				description: '',
+				avatarUrl: '',
+
+			};
+			CommonIO.contacts = contacts;
+
+			CommonIO.GetProfile(username);
+
+		}
+
+	});
+
+	Socket.on('groups', function(data) {
+
+		console.log(data);
+
+		for(var it in data.groups) {
+
+			var gid = data.groups[it];
+
+			var groups = {};
+			groups[gid] = {
+
+				gid: gid,
+				groupname: groupname,
+
+			};
+			CommonIO.groups = groups;
+
 		}
 
 	});
@@ -261,6 +394,13 @@
 
 		console.log(data);
 		UserSearch.users = data.users;
+
+	});
+
+	Socket.on('group.search', function(data) {
+
+		console.log(data);
+		GroupSearch.groups = data.groups;
 
 	});
 
@@ -274,10 +414,27 @@
 
 		console.log(data);
 
-		CommonIO.username = data.username;
-		CommonIO.nickname = data.nickname;
-		CommonIO.description = data.description;
-		CommonIO.avatarUrl = data.avatarUrl;
+		if(data.username == CommonIO.username) {
+
+			CommonIO.username = data.username;
+			CommonIO.nickname = data.nickname;
+			CommonIO.description = data.description;
+			CommonIO.avatarUrl = data.avatarUrl;
+
+		}
+		else if(data.username in CommonIO.contacts) {
+
+			var contact = CommonIO.contacts[data.username];
+
+			contact.username = data.username;
+			contact.nickname = data.nickname;
+			contact.description = data.description;
+			contact.avatarUrl = data.avatarUrl;
+
+		}
+		else {
+
+		}
 
 	});
 
