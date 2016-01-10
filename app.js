@@ -1,4 +1,8 @@
 
+var _path = require('path');
+var _fs = require('fs');
+var _crypto = require('crypto');
+
 var log4js = require('log4js');
 log4js.configure({
 	appenders: [
@@ -7,7 +11,11 @@ log4js.configure({
 	]
 })
 
+var mime = require('mime');
+
 var express = require('express');
+var bodyParser = require('body-parser');
+var multer = require('multer');
 
 var Database = require('./lib/database.js');
 
@@ -55,7 +63,7 @@ function Session(socket, data) {
 
 		Sessions[session.sid] = session;
 
-		socket.emit('session', {
+		if(socket) socket.emit('session', {
 			err: null,
 			sessionId: session.sid,
 		});
@@ -70,7 +78,7 @@ function Session(socket, data) {
 	//logger.debug(session);
 
 	session.lastUpdated = Date.now();
-	session.socket = socket;
+	if(socket) session.socket = socket;
 
 	if(session.username && !OnlineUsers[session.username]) {
 
@@ -110,7 +118,46 @@ function AuthorizeContactAdd(session, callback) {
 
 }
 
+function AuthorizeGroupAdd(session, callback) {
+
+	if(!session.username) {
+
+		callback('ERROR_SESSION_NOT_LOGIN');
+		return false;
+
+	}
+
+	return true;
+
+}
+
+function AuthorizeGroupJoin(session, callback) {
+
+	if(!session.username) {
+
+		callback('ERROR_SESSION_NOT_LOGIN');
+		return false;
+
+	}
+
+	return true;
+
+}
+
 function AuthorizeChat(session, callback) {
+
+	if(!session.username) {
+
+		callback('ERROR_SESSION_NOT_LOGIN');
+		return false;
+
+	}
+
+	return true;
+
+}
+
+function AuthorizeUpload(session, callback) {
 
 	if(!session.username) {
 
@@ -127,7 +174,158 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-app.use(express.static('public'));
+app.use('/public', express.static('public'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.get('/profile', function(req, res) {
+
+	var data = req.query;
+
+	var session = Session(null, data);
+
+	if(!Validate(data, {
+		sessionId: 'string',
+	}, function(err) {
+
+		socket.emit('profile.get', {
+			err: err
+		});
+
+	})) return;
+
+	Util.Flow(function*(cb) {
+
+		var username = data.username ? data.username : session.username;
+		if(!username) return res.json({
+			err: 'ERROR_USERNAME_INVALID'
+		});
+
+		//console.log(username);
+
+		var [err, user] = yield Database.FindUser(username, cb);
+		if(err) return res.json({
+			err: err
+		});
+
+		if(!user) return res.json({
+			err: 'ERROR_USER_NOT_FOUND'
+		});
+
+		return res.json({
+			err: null,
+			username: user.username,
+			nickname: user.nickname,
+			description: user.description,
+			avatarUrl: user.avatarUrl,
+		});
+
+	});
+
+});
+
+app.post('/profile/edit', function(req, res) {
+
+	var data = req.body;
+
+	var session = Session(null, data);
+
+	if(!Validate(data, {
+		sessionId: 'string',
+		nickname: 'string',
+		description: 'string',
+	}, function(err) {
+
+		return res.json({
+			err: err
+		});
+
+	})) return;
+
+	Util.Flow(function*(cb) {
+
+		if(!AuthorizeProfileEdit(session, function(err) {
+
+			return res.json({
+				err: err
+			});
+
+		})) return;
+
+		var [err, user] = yield Database.FindUser(session.username, cb);
+		if(err) return res.json({
+			err: err
+		});
+
+		if(!user) return res.json({
+			err: 'ERROR_USER_NOT_FOUND'
+		});
+
+		user.nickname = data.nickname;
+		user.description = data.description;
+
+		yield user.save(cb);
+
+		return res.json({
+			err: null,
+			nickname: user.nickname,
+			description: user.description,
+		});
+
+	});
+
+});
+
+app.post('/upload', multer().single('file'), function(req, res) {
+
+	var data = req.body;
+
+	var session = Session(null, data);
+
+	if(!Validate(data, {
+		sessionId: 'string',
+	}, function(err) {
+
+		return res.json({
+			err: err
+		});
+
+	})) return;
+
+	Util.Flow(function*(cb) {
+
+		if(!AuthorizeUpload(session, function(err) {
+
+			return res.json({
+				err: err
+			});
+
+		})) return;
+
+		console.log(req.file);
+
+		var hasher = _crypto.createHash('md5');
+		hasher.setEncoding('hex');
+		hasher.end(req.file.buffer);
+		var hash = hasher.read();
+
+		var [err, upload] = yield Database.AddUpload({
+			hash: hash,
+			mimeType: mime.lookup(req.file.originalname),
+			filename: hash + _path.extname(req.file.originalname),
+			owner: session.username,
+		}, cb);
+
+		yield _fs.writeFile(_path.join('./', 'uploads', upload.filename), req.file.buffer, cb);
+
+		return res.json({
+			err: null,
+			hash: hash
+		});
+
+	});
+
+});
 
 io.on('connection', function(socket) {
 
@@ -452,6 +650,95 @@ io.on('connection', function(socket) {
 
 	});
 
+	socket.on('group.add', function(data) {
+
+		var session = Session(socket, data);
+
+		if(!Validate(data, {
+			sessionId: 'string',
+			groupname: 'string',
+		}, function(err) {
+
+			socket.emit('group.add', {
+				err: err
+			});
+
+		})) return;
+
+		Util.Flow(function*(cb) {
+
+			if(!AuthorizeGroupAdd(session, function(err) {
+
+				return socket.emit('group.add', {
+					err: err
+				});
+
+			})) return;
+
+			var [err, group] = Database.AddGroup(data.groupname, session.username, cb);
+
+			return socket.emit('group.add', {
+				err: null,
+				gid: group.gid,
+				groupname: group.groupname,
+				creator: group.creator,
+				administrators: group.administrators,
+				members: group.members,
+			});
+
+		});
+
+	});
+
+	socket.on('group.join', function(data) {
+
+		var session = Session(socket, data);
+		data.gid = parseInt(data.gid);
+
+		if(!Validate(data, {
+			sessionId: 'string',
+			gid: 'number',
+		}, function(err) {
+
+			return socket.emit('group.join', {
+				err: err
+			});
+
+		})) return;
+
+		Util.Flow(function*(cb) {
+
+			if(!AuthorizeGroupJoin(session, function(err) {
+
+				return socket.emit('group.join', {
+					err: err
+				});
+
+			})) return;
+
+			var [err, group] = yield Database.FindGroup(data.gid, cb);
+			if(err) return socket.emit('group.join', {
+				err: err,
+			});
+
+			if(!group) return socket.emit('group.join', {
+				err: 'ERROR_GROUP_NOT_FOUND',
+			});
+
+			// FIXME: Can't use `var err = ` or `err = { 0: null }`.
+			// This seems to be an issue with `Util.Flow`, or destructuring.
+			var [err] = yield Database.JoinGroup(session.username, data.gid, cb);
+			if(err) return socket.emit('group.join', {
+				err: err,
+			});
+
+			return socket.emit('group.join', { err: null });
+
+		});
+
+	});
+
+	// Deprecated.
 	socket.on('profile.get', function(data) {
 
 		var session = Session(socket, data);
@@ -496,7 +783,7 @@ io.on('connection', function(socket) {
 
 	});
 
-	// TODO:
+	// Deprecated.
 	socket.on('profile.edit', function(data) {
 
 		var session = Session(socket, data);
