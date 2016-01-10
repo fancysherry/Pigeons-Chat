@@ -40,7 +40,7 @@ Be sure to use `Content-Type: multipart/form-data`, so that fields and files can
 
 An open access url for the avatar image of ${USERNAME}.
 
-### POST /file/upload
+### POST /upload
 
 | Type   | Name      | Comment                         |
 | ------ | --------- | ------------------------------- |
@@ -49,7 +49,13 @@ An open access url for the avatar image of ${USERNAME}.
 
 Be sure to use `Content-Type: multipart/form-data`, so that fields and files can both be received. And the server will return the final url to the file.
 
-### GET /file/${MD5}
+| Type   | Name     | Comment |
+| ------ | -------- | ------- |
+| string | err      |         |
+| string | hash     |         |
+| string | mimeType |         |
+
+### GET /uploads/${MD5}
 
 An open access url for the file of ${MD5}.
 
@@ -74,15 +80,11 @@ When a client connects and the server can't associate it with existing sessions,
 | string | password  |         |
 | string | nickname  |         |
 
-
-
 ### register on Client
 
 | Type   | Name | Comment |
 | ------ | ---- | ------- |
 | string | err  |         |
-
-
 
 ### login on Server
 
@@ -92,15 +94,25 @@ When a client connects and the server can't associate it with existing sessions,
 | string | username  |         |
 | string | password  |         |
 
-
-
 ### login on Client
 
 | Type   | Name | Comment |
 | ------ | ---- | ------- |
 | string | err  |         |
 
+### contacts on Client
 
+| Type   | Name     | Comment |
+| ------ | -------- | ------- |
+| string | err      |         |
+| user[] | contacts |         |
+
+### groups on Client
+
+| Type    | Name   | Comment |
+| ------- | ------ | ------- |
+| string  | err    |         |
+| group[] | groups |         |
 
 ### user.search on Server
 
@@ -109,16 +121,12 @@ When a client connects and the server can't associate it with existing sessions,
 | string | sessionId |         |
 | string | pattern   |         |
 
-
-
 ### user.search on Client
 
 | Type           | Name  | Comment                                  |
 | -------------- | ----- | ---------------------------------------- |
 | string         | err   |                                          |
 | array of users | users | user { username, nickname, description } |
-
-
 
 ### contact.add on Server
 
@@ -127,15 +135,42 @@ When a client connects and the server can't associate it with existing sessions,
 | string | sessionId |         |
 | string | username  |         |
 
-
-
 ### contact.add on Client
 
 | Type   | Name | Comment |
 | ------ | ---- | ------- |
 | string | err  |         |
 
+### group.add on Server
 
+| Type   | Name      | Comment |
+| ------ | --------- | ------- |
+| string | sessionId |         |
+| string | groupname |         |
+
+### group.add on Client
+
+| Type     | Name           | Comment |
+| -------- | -------------- | ------- |
+| string   | err            |         |
+| number   | gid            |         |
+| string   | groupname      |         |
+| string   | creator        |         |
+| string[] | administrators |         |
+| string[] | members        |         |
+
+### group.join on Server
+
+| Type   | Name      | Comment |
+| ------ | --------- | ------- |
+| string | sessionId |         |
+| number | gid       |         |
+
+### group.join on Client
+
+| Type   | Name | Comment |
+| ------ | ---- | ------- |
+| string | err  |         |
 
 ### profile.get on Server
 
@@ -143,8 +178,6 @@ When a client connects and the server can't associate it with existing sessions,
 | ------ | --------- | ------- |
 | string | sessionId |         |
 | string | pattern   |         |
-
-
 
 ### profile.get on Client
 
@@ -156,8 +189,6 @@ When a client connects and the server can't associate it with existing sessions,
 | string | description |         |
 | string | avatarUrl   |         |
 
-
-
 ### profile.edit on Server
 
 | Type   | Name        | Comment |
@@ -166,23 +197,19 @@ When a client connects and the server can't associate it with existing sessions,
 | string | nickname    |         |
 | string | description |         |
 
-
-
 ### profile.edit on Client
 
 | Type   | Name | Comment |
 | ------ | ---- | ------- |
 | string | err  |         |
 
-
-
 ### chat on Server
 
-| Type   | Name        | Comment |
-| ------ | ----------- | ------- |
-| string | sessionId   |         |
-| string | from        |         |
-| string | message     |         |
+| Type   | Name      | Comment |
+| ------ | --------- | ------- |
+| string | sessionId |         |
+| string | to        |         |
+| string | message   |         |
 
 The client emits this event when he sends message to other user.
 
@@ -192,17 +219,41 @@ The client emits this event when he sends message to other user.
 | ------ | ---- | ------- |
 | string | err  |         |
 
+### group.chat on Server
 
+| Type   | Name      | Comment |
+| ------ | --------- | ------- |
+| string | sessionId |         |
+| number | gid       |         |
+| string | message   |         |
+
+The client emits this event when he sends message to other user.
+
+### group.chat on Client
+
+| Type   | Name | Comment |
+| ------ | ---- | ------- |
+| string | err  |         |
+
+The client receives this event when someone sends message to him.
 
 ### message on Client
 
-| Type   | Name        | Comment |
-| ------ | ----------- | ------- |
-| string | err         |         |
-| string | to          |         |
-| string | message     |         |
+| Type   | Name    | Comment |
+| ------ | ------- | ------- |
+| string | err     |         |
+| string | from    |         |
+| string | message |         |
 
-The client receives this event when someone sends message to him.
+### group.message on Client
+
+| Type   | Name    | Comment |
+| ------ | ------- | ------- |
+| string | err     |         |
+| number | gid     |         |
+| string | message |         |
+
+The client receives this event when group have messages.
 
 ## The MIT License
 
