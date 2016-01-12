@@ -762,6 +762,15 @@ io.on('connection', function(socket) {
 
 			//console.log(username);
 
+			var [err, myself] = yield Database.FindUser(session.username, cb);
+			if(err) return socket.emit('profile.get', {
+				err: err
+			});
+
+			if(!myself) return socket.emit('profile.get', {
+				err: 'ERROR_USER_NOT_FOUND'
+			});
+
 			var [err, user] = yield Database.FindUser(username, cb);
 			if(err) return socket.emit('profile.get', {
 				err: err
@@ -777,6 +786,7 @@ io.on('connection', function(socket) {
 				nickname: user.nickname,
 				description: user.description,
 				avatarUrl: user.avatarUrl,
+				isContact: user.username in myself.contactUsernames,
 			});
 
 		});
