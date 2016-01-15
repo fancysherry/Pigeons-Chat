@@ -2,6 +2,7 @@
 var _path = require('path');
 var _fs = require('fs');
 var _crypto = require('crypto');
+var _repl = require('repl');
 
 var log4js = require('log4js');
 log4js.configure({
@@ -217,7 +218,6 @@ app.get('/profile', function(req, res) {
 			username: user.username,
 			nickname: user.nickname,
 			description: user.description,
-			avatarUrl: user.avatarUrl,
 		});
 
 	});
@@ -270,6 +270,39 @@ app.post('/profile/edit', function(req, res) {
 			err: null,
 			nickname: user.nickname,
 			description: user.description,
+		});
+
+	});
+
+});
+
+app.get('/avatar/:username', function(req, res) {
+
+	Util.Flow(function*(cb) {
+
+		var username = req.params.username;
+
+		var [err, user] = yield Database.FindUser(username, cb);
+
+		if(!err && user && user.username) {
+
+			var [err] = yield res.sendFile(user.username, {
+				root: __dirname + '/uploads/avatars/',
+				dotfiles: 'deny',
+				/*
+				headers: {
+					'Content-Type': ''
+				},
+				*/
+			}, cb);
+
+			if(!err) return;
+
+		}
+
+		return res.sendFile('default.png', {
+			root: __dirname + '/uploads/avatars/',
+			dotfiles: 'deny',
 		});
 
 	});
@@ -341,11 +374,11 @@ io.on('connection', function(socket) {
 
 		if(session.username && OnlineUsers[session.username]) {
 
+			console.log('User ' + session.username + ' offline.');
+
 			OnlineUsers[session.username] = null;
 			delete OnlineUsers[session.username];
 			session.username = null;
-
-			console.log('User ' + session.username + ' offline.');
 
 		}
 
@@ -462,7 +495,12 @@ io.on('connection', function(socket) {
 
 			for(var username of user.contactUsernames) {
 
-				r.contacts.push(username);
+				var [err, t] = yield Database.FindUser(username, cb);
+
+				r.contacts.push({
+					username: t.username,
+					nickname: t.nickname,
+				});
 
 			}
 
@@ -503,7 +541,12 @@ io.on('connection', function(socket) {
 
 			for(var gid of user.groupIds) {
 
-				r.groups.push(gid);
+				var [err, t] = yield Database.FindGroup(gid, cb);
+
+				r.groups.push({
+					gid: t.gid,
+					groupname: t.groupname,
+				});
 
 			}
 
@@ -548,7 +591,6 @@ io.on('connection', function(socket) {
 					username: user.username,
 					nickname: user.nickname,
 					description: user.description,
-					avatarUrl: user.avatarUrl,
 				});
 
 			}
@@ -639,7 +681,7 @@ io.on('connection', function(socket) {
 
 				r.groups.push({
 					gid: group.gid,
-					groupname: user.groupname,
+					groupname: group.groupname,
 				});
 
 			}
@@ -675,7 +717,7 @@ io.on('connection', function(socket) {
 
 			})) return;
 
-			var [err, group] = Database.AddGroup(data.groupname, session.username, cb);
+			var [err, group] = yield Database.AddGroup(data.groupname, session.username, cb);
 
 			return socket.emit('group.add', {
 				err: null,
@@ -785,7 +827,6 @@ io.on('connection', function(socket) {
 				username: user.username,
 				nickname: user.nickname,
 				description: user.description,
-				avatarUrl: user.avatarUrl,
 				isContact: user.username in myself.contactUsernames,
 			});
 
@@ -888,6 +929,40 @@ io.on('connection', function(socket) {
 
 	});
 
+	socket.on('group.chat', function() {
+
+		var session = Session(socket, data);
+
+		if(!Validate(data, {
+			sessionId: 'string',
+			gid: 'string',
+			message: 'string',
+		}, function(err) {
+
+			return socket.emit('group.chat', {
+				err: err
+			});
+
+		})) return;
+
+		Util.Flow(function*(cb) {
+
+			if(!AuthorizeChat(session, function(err) {
+
+				return socket.emit('group.chat', {
+					err: err
+				});
+
+			})) return;
+
+			return socket.emit('group.chat', {
+				err: null
+			});
+
+		});
+
+	});
+
 });
 
 http.listen(8100, function() {
@@ -897,6 +972,13 @@ http.listen(8100, function() {
 	logger.info('HTTP server is listening at :8100.');
 
 });
+
+var repl = _repl.start('> ');
+repl.on('exit', function() {
+	process.exit(0);
+});
+repl.context.Sessions = Sessions;
+repl.context.OnlineUsers = OnlineUsers;
 
 /*
 

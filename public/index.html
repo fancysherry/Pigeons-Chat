@@ -8,9 +8,9 @@
 
 			<p>SessionId: {{ sessionId }}</p>
 			<p>Username: {{ username }}</p>
-			<p>Nickname: {{ nickname }}</p>
-			<p>Description: {{ description }}</p>
-			<p><img ms-attr-src="avatarUrl" /></p>
+			<label>Nickname: <input type="text" ms-duplex="nickname" /></label>
+			<label>Description: <input type="text" ms-duplex="description" /></label>
+			<p>Avatar: <img ms-attr-src="'/avatar/' + username" /></p>
 
 			<ul>
 				<li ms-repeat="contacts">{{ $key }}: {{ $val.nickname }} - {{ $val.description }}</li>
@@ -52,6 +52,13 @@
 
 		</div>
 
+		<div ms-controller="GroupAdd">
+
+				<label>Groupname: <input type="text" ms-duplex="groupname" /></label>
+				<button type="button" ms-click="AddGroup">AddGroup</button>
+
+		</div>
+
 		<div ms-controller="GroupSearch">
 
 			<div>
@@ -73,6 +80,20 @@
 
 			<div>
 				<label>To: <input type="text" ms-duplex="to" /></label>
+				<label>Message: <textarea type="text" ms-duplex="message"></textarea></label>
+				<button type="button" ms-click="Send">Send</button>
+			</div>
+
+		</div>
+
+		<div ms-controller="GroupChat">
+			
+			<ul>
+				<li ms-repeat="messages">{{ el.gid }} - {{ el.from }}: {{ el.message }}</li>
+			</ul>
+
+			<div>
+				<label>GID: <input type="text" ms-duplex="gid" /></label>
 				<label>Message: <textarea type="text" ms-duplex="message"></textarea></label>
 				<button type="button" ms-click="Send">Send</button>
 			</div>
@@ -229,6 +250,27 @@
 
 	});
 
+	window.GroupAdd = avalon.define({
+
+		$id: 'GroupAdd',
+
+		groupname: '',
+
+		isHidden: false,
+
+		AddGroup: function() {
+
+			Socket.emit('group.add', {
+
+				sessionId: CommonIO.sessionId,
+				groupname: GroupAdd.groupname,
+
+			});
+
+		},
+
+	});
+
 	window.GroupSearch = avalon.define({
 
 		$id: 'GroupSearch',
@@ -272,6 +314,30 @@
             });
 
     	},
+
+    });
+
+	window.GroupChat = avalon.define({
+
+        $id: 'GroupChat',
+
+        gid: '',
+        message: '',
+        messages: [],
+
+        isHidden: false,
+
+        Send: function() {
+
+            Socket.emit('group.chat', {
+
+                sessionId: CommonIO.sessionId,
+                gid: Chat.gid,
+                message: Chat.message,
+
+            });
+
+        },
 
     });
 
@@ -348,24 +414,24 @@
 
 		console.log(data);
 
+		var contacts = {};
 		for(var it in data.contacts) {
 
-			var username = data.contacts[it];
+			var contact = data.contacts[it];
 
-			var contacts = {};
-			contacts[username] = {
+			contacts[contact.username] = {
 
-				username: username,
-				nickname: '',
+				username: contact.username,
+				nickname: contact.nickname,
 				description: '',
 				avatarUrl: '',
 
 			};
-			CommonIO.contacts = contacts;
-
-			CommonIO.GetProfile(username);
+			CommonIO.GetProfile(contact.username);
 
 		}
+		CommonIO.contacts = contacts;
+
 
 	});
 
@@ -373,20 +439,20 @@
 
 		console.log(data);
 
+		var groups = {};
 		for(var it in data.groups) {
 
-			var gid = data.groups[it];
+			var group = data.groups[it];
 
-			var groups = {};
-			groups[gid] = {
+			groups[group.gid] = {
 
-				gid: gid,
-				groupname: groupname,
+				gid: group.gid,
+				groupname: group.groupname,
 
 			};
-			CommonIO.groups = groups;
 
 		}
+		CommonIO.groups = groups;
 
 	});
 
@@ -394,6 +460,13 @@
 
 		console.log(data);
 		UserSearch.users = data.users;
+
+	});
+
+	Socket.on('group.add', function(data) {
+
+		console.log(data);
+		CommonIO.GetGroups();
 
 	});
 
@@ -419,7 +492,7 @@
 			CommonIO.username = data.username;
 			CommonIO.nickname = data.nickname;
 			CommonIO.description = data.description;
-			CommonIO.avatarUrl = data.avatarUrl;
+			CommonIO.avatarUrl = "/avatar/" + data.username;
 
 		}
 		else if(data.username in CommonIO.contacts) {
@@ -429,7 +502,7 @@
 			contact.username = data.username;
 			contact.nickname = data.nickname;
 			contact.description = data.description;
-			contact.avatarUrl = data.avatarUrl;
+			contact.avatarUrl = "/avatar/" + data.username;
 
 		}
 		else {
@@ -453,11 +526,29 @@
 
 	});
 
+	Socket.on('group.chat', function(data) {
+
+		console.log(data);
+
+	});
+
 	Socket.on('message', function(data) {
 
 		console.log(data);
 
 		Chat.messages.push({
+			from: data.from,
+			message: data.message,
+		});
+
+	});
+
+	Socket.on('group.message', function(data) {
+
+		console.log(data);
+
+		GroupChat.messages.push({
+			gid: data.gid,
 			from: data.from,
 			message: data.message,
 		});

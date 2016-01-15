@@ -4,14 +4,16 @@
 
 * API
   * HTTP
-    * /avatar/upload
+    * /avatar
     * /avatar/${USERNAME}
-    * /file/upload
-    * /file/${MD5}
+    * /upload
+    * /uploads/${MD5}
   * IO
     * session C
     * register C/S
     * login C/S
+    * contacts C/S
+    * groups C/S
     * user.search C/S
     * contact.add C/S
     * profile.get C/S
@@ -27,7 +29,7 @@ When a new event triggered, the callback will first it creates/gets a session fr
 
 ## HTTP API Reference
 
-### POST /avatar/upload
+### POST /avatar
 
 | Type   | Name      | Comment                                 |
 | ------ | --------- | --------------------------------------- |
@@ -107,12 +109,26 @@ When a client connects and the server can't associate it with existing sessions,
 | string | err      |         |
 | user[] | contacts |         |
 
+```
+user {
+   username: string,
+   nickname: string, 
+}
+```
+
 ### groups on Client
 
 | Type    | Name   | Comment |
 | ------- | ------ | ------- |
 | string  | err    |         |
 | group[] | groups |         |
+
+```
+group {
+   gid: number,
+   groupname: string, 
+}
+```
 
 ### user.search on Server
 
@@ -187,7 +203,6 @@ When a client connects and the server can't associate it with existing sessions,
 | string | username    |         |
 | string | nickname    |         |
 | string | description |         |
-| string | avatarUrl   |         |
 
 ### profile.edit on Server
 
@@ -251,6 +266,7 @@ The client receives this event when someone sends message to him.
 | ------ | ------- | ------- |
 | string | err     |         |
 | number | gid     |         |
+| string | from    |         |
 | string | message |         |
 
 The client receives this event when group have messages.
