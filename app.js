@@ -885,6 +885,55 @@ io.on('connection', function(socket) {
 
 	});
 
+	socket.on('group.get', function(data) {
+
+		var session = Session(socket, data);
+		data.gid = parseInt(data.gid);
+
+		if(!Validate(data, {
+			sessionId: 'string',
+			gid: 'number',
+		}, function(err) {
+
+			socket.emit('group.get', {
+				err: err
+			});
+
+		})) return;
+
+		Util.Flow(function*(cb) {
+
+			var [err, myself] = yield Database.FindUser(session.username, cb);
+			if(err) return socket.emit('group.get', {
+				err: err
+			});
+
+			if(!myself) return socket.emit('group.get', {
+				err: 'ERROR_USER_NOT_FOUND'
+			});
+
+			var [err, group] = yield Database.FindGroup(data.gid, cb);
+			if(err) return socket.emit('group.get', {
+				err: err
+			});
+
+			if(!group) return socket.emit('group.get', {
+				err: 'ERROR_GROUP_NOT_FOUND'
+			});
+
+			return socket.emit('group.get', {
+				err: null,
+				gid: group.gid,
+				groupname: group.groupname,
+				administrators: group.administrators,
+				members: group.members,
+				isJoined: group.gid in myself.groupIds,
+			});
+
+		});
+
+	});
+
 	socket.on('chat', function(data) {
 
 		var session = Session(socket, data);

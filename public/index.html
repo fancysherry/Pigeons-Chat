@@ -67,7 +67,7 @@
 			</div>
 
 			<ul>
-				<li ms-repeat="groups">{{ el.groupname }}: @{{ el.gid }}</li>
+				<li ms-repeat="groups">{{ el.groupname }}: @{{ el.gid }}<button type="button" ms-click="JoinGroup(el.gid)">JoinGroup</button></li>
 			</ul>
 
 		</div>
@@ -173,6 +173,17 @@
 				sessionId: CommonIO.sessionId,
 				nickname: CommonIO.nickname,
 				description: '' + Date.now(),
+
+			});
+
+		},
+
+		GetGroup: function(gid) {
+
+			Socket.emit('group.get', {
+
+				sessionId: CommonIO.sessionId,
+				gid: gid,
 
 			});
 
@@ -286,6 +297,17 @@
 
 				sessionId: CommonIO.sessionId,
 				pattern: GroupSearch.pattern,
+
+			});
+
+		},
+
+		JoinGroup: function(gid) {
+
+			Socket.emit('group.join', {
+
+				sessionId: CommonIO.sessionId,
+				gid: gid,
 
 			});
 
@@ -448,8 +470,11 @@
 
 				gid: group.gid,
 				groupname: group.groupname,
+				administrators: [''],
+				members: [''],
 
 			};
+			CommonIO.GetGroup(group.gid);
 
 		}
 		CommonIO.groups = groups;
@@ -483,6 +508,13 @@
 
 	});
 
+	Socket.on('group.join', function(data) {
+
+		console.log(data);
+		CommonIO.GetGroups();
+
+	});
+
 	Socket.on('profile.get', function(data) {
 
 		console.log(data);
@@ -492,7 +524,7 @@
 			CommonIO.username = data.username;
 			CommonIO.nickname = data.nickname;
 			CommonIO.description = data.description;
-			CommonIO.avatarUrl = "/avatar/" + data.username;
+			CommonIO.avatarUrl = '/avatar/' + data.username;
 
 		}
 		else if(data.username in CommonIO.contacts) {
@@ -502,7 +534,7 @@
 			contact.username = data.username;
 			contact.nickname = data.nickname;
 			contact.description = data.description;
-			contact.avatarUrl = "/avatar/" + data.username;
+			contact.avatarUrl = '/avatar/' + data.username;
 
 		}
 		else {
@@ -517,6 +549,15 @@
 
 		CommonIO.nickname = data.nickname;
 		CommonIO.description = data.description;
+
+	});
+
+	Socket.on('group.get', function(data) {
+
+		console.log(data);
+
+		CommonIO.groups[data.gid].administrators = data.administrators;
+		CommonIO.groups[data.gid].members = data.members;
 
 	});
 
