@@ -276,6 +276,45 @@ app.post('/profile/edit', function(req, res) {
 
 });
 
+app.post('/avatar', multer().single('avatar'), function(req, res) {
+
+	var data = req.body;
+
+	var session = Session(null, data);
+
+	if(!Validate(data, {
+		sessionId: 'string',
+	}, function(err) {
+
+		return res.json({
+			err: err
+		});
+
+	})) return;
+
+	Util.Flow(function*(cb) {
+
+		if(!AuthorizeUpload(session, function(err) {
+
+			return res.json({
+				err: err
+			});
+
+		})) return;
+
+		console.log(req.file);
+
+		yield _fs.writeFile(_path.join('./', 'uploads', 'avatars', session.username), req.file.buffer, cb);
+
+		return res.json({
+			err: null,
+			username: session.username
+		});
+
+	});
+
+});
+
 app.get('/avatar/:username', function(req, res) {
 
 	Util.Flow(function*(cb) {
@@ -355,6 +394,34 @@ app.post('/upload', multer().single('file'), function(req, res) {
 			err: null,
 			hash: hash
 		});
+
+	});
+
+});
+
+app.get('/uploads/:md5', function(req, res) {
+
+	Util.Flow(function*(cb) {
+
+		var md5 = req.params.md5;
+
+		var [err, upload] = yield Database.FindUpload(upload, cb);
+
+		if(!err && upload && upload.hash == md5) {
+
+			var [err] = yield res.sendFile(upload.hash.filename, {
+				root: __dirname + '/uploads/',
+				dotfiles: 'deny',
+				headers: {
+					'Content-Type': upload.mimeType,
+				},
+			}, cb);
+
+			if(!err) return;
+
+		}
+
+		return res.status(404).end();
 
 	});
 
