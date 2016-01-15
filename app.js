@@ -978,13 +978,14 @@ io.on('connection', function(socket) {
 
 	});
 
-	socket.on('group.chat', function() {
+	socket.on('group.chat', function(data) {
 
 		var session = Session(socket, data);
+		data.gid = parseInt(data.gid);
 
 		if(!Validate(data, {
 			sessionId: 'string',
-			gid: 'string',
+			gid: 'number',
 			message: 'string',
 		}, function(err) {
 
@@ -1003,6 +1004,49 @@ io.on('connection', function(socket) {
 				});
 
 			})) return;
+
+			var [err, group] = yield Database.FindGroup(data.gid, cb);
+			if(err) return socket.emit('group.chat', {
+				err: err,
+			});
+
+			if(!group) return socket.emit('group.chat', {
+				err: 'ERROR_GROUP_NOT_FOUND',
+			});
+
+			for(var i = 0; i < group.administrators.length; i++) {
+				
+				var username = group.administrators[i];
+
+				if(username in OnlineUsers && username != session.username) {
+
+					OnlineUsers[username].socket.emit('group.message', {
+						err: null,
+						gid: data.gid,
+						from: session.username,
+						message: data.message,
+					});
+
+				}
+
+			}
+
+			for(var i = 0; i < group.members.length; i++) {
+				
+				var username = group.members[i];
+
+				if(username in OnlineUsers && username != session.username) {
+					
+					OnlineUsers[username].socket.emit('group.message', {
+						err: null,
+						gid: data.gid,
+						from: session.username,
+						message: data.message,
+					});
+
+				}
+
+			}
 
 			return socket.emit('group.chat', {
 				err: null
