@@ -193,7 +193,7 @@ group {
 | Type   | Name      | Comment |
 | ------ | --------- | ------- |
 | string | sessionId |         |
-| string | pattern   |         |
+| string | username  |         |
 
 ### profile.get on Client
 
@@ -217,6 +217,23 @@ group {
 | Type   | Name | Comment |
 | ------ | ---- | ------- |
 | string | err  |         |
+
+### group.get on Server
+
+| Type   | Name      | Comment |
+| ------ | --------- | ------- |
+| string | sessionId |         |
+| number | gid   |         |
+
+### group.get on Client
+
+| Type   | Name             | Comment |
+| ------ | ---------------- | ------- |
+| string | err              |         |
+| string | gid              |         |
+| string | groupname        |         |
+| string[] | administrators |         |
+| string[] | members        |         |
 
 ### chat on Server
 
