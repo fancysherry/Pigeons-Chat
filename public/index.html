@@ -10,7 +10,7 @@
 			<p>Username: {{ username }}</p>
 			<label>Nickname: <input type="text" ms-duplex="nickname" /></label>
 			<label>Description: <input type="text" ms-duplex="description" /></label>
-			<p>Avatar: <img ms-attr-src="'/avatar/' + username" /></p>
+			<p>Avatar: <img width="160" height="160" ms-attr-src="'/avatar/' + username" /></p>
 
 			<ul>
 				<li ms-repeat="contacts">{{ $key }}: {{ $val.nickname }} - {{ $val.description }}</li>
@@ -100,7 +100,7 @@
 
 		</div>
 
-		<a href="/upload.html">Upload here</a>
+		<a href="/public/upload.html">Upload here</a>
 
 	</div>
 	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
