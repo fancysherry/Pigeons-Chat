@@ -486,6 +486,10 @@ io.on('connection', function(socket) {
 
 		Util.Flow(function*(cb) {
 
+			if(/^[A-Za-z0-9]{3,9}$/.test(data.username) == false) return socket.emit('register', {
+				err: 'ERROR_USERNAME_ILLEGAL',
+			});
+
 			if((yield Database.FindUser(data.username, cb))[1]) return socket.emit('register', {
 				err: 'ERROR_USERNAME_EXISTS',
 			});
