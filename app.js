@@ -782,6 +782,7 @@ io.on('connection', function(socket) {
 		if(!Validate(data, {
 			sessionId: 'string',
 			groupname: 'string',
+			members: 'object',
 		}, function(err) {
 
 			socket.emit('group.add', {
@@ -801,6 +802,9 @@ io.on('connection', function(socket) {
 			})) return;
 
 			var [err, group] = yield Database.AddGroup(data.groupname, session.username, cb);
+
+			Array.prototype.push.apply(group.members, data.members);
+			yield group.save(cb);
 
 			return socket.emit('group.add', {
 				err: null,
@@ -1154,6 +1158,7 @@ var repl = _repl.start('> ');
 repl.on('exit', function() {
 	process.exit(0);
 });
+repl.context.Database = Database;
 repl.context.Sessions = Sessions;
 repl.context.OnlineUsers = OnlineUsers;
 

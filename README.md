@@ -159,10 +159,11 @@ group {
 
 ### group.add on Server
 
-| Type   | Name      | Comment |
-| ------ | --------- | ------- |
-| string | sessionId |         |
-| string | groupname |         |
+| Type     | Name      | Comment |
+| -------- | --------- | ------- |
+| string   | sessionId |         |
+| string   | groupname |         |
+| string[] | members   |         |
 
 ### group.add on Client
 
