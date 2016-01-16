@@ -415,17 +415,17 @@ app.post('/upload', multer().single('file'), function(req, res) {
 
 });
 
-app.get('/uploads/:md5', function(req, res) {
+app.get('/uploads/:hash', function(req, res) {
 
 	Util.Flow(function*(cb) {
 
-		var md5 = req.params.md5;
+		var hash = req.params.hash;
 
-		var [err, upload] = yield Database.FindUpload(upload, cb);
+		var [err, upload] = yield Database.FindUpload(hash, cb);
 
-		if(!err && upload && upload.hash == md5) {
+		if(!err && upload && upload.hash == hash) {
 
-			var [err] = yield res.sendFile(upload.hash.filename, {
+			var [err] = yield res.sendFile(upload.filename, {
 				root: __dirname + '/uploads/',
 				dotfiles: 'deny',
 				headers: {
