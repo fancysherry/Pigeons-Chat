@@ -388,6 +388,22 @@ app.post('/upload', multer().single('file'), function(req, res) {
 			owner: session.username,
 		}, cb);
 
+		if(err) {
+
+			if(err == 'ERROR_UPLOAD_HASH_EXISTS') return res.json({
+				err: null,
+				hash: hash,
+			});
+			else return res.json({
+				err: err,
+			});
+
+		}
+
+		if(!upload) return res.json({
+			err: 'ERROR_UPLOAD_SAVE_FAILED',
+		});
+
 		yield _fs.writeFile(_path.join('./', 'uploads', upload.filename), req.file.buffer, cb);
 
 		return res.json({
@@ -524,7 +540,7 @@ io.on('connection', function(socket) {
 
 			return socket.emit('login', {
 				err: null,
-				username: session.username,
+				//username: session.username,
 			});
 
 		});
@@ -992,6 +1008,7 @@ io.on('connection', function(socket) {
 				err: null,
 				gid: group.gid,
 				groupname: group.groupname,
+				creator: group.creator,
 				administrators: group.administrators,
 				members: group.members,
 				isJoined: group.gid in myself.groupIds,
