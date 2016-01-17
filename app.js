@@ -544,7 +544,7 @@ io.on('connection', function(socket) {
 
 			return socket.emit('login', {
 				err: null,
-				//username: session.username,
+				username: session.username,
 			});
 
 		});
@@ -805,10 +805,7 @@ io.on('connection', function(socket) {
 
 			})) return;
 
-			var [err, group] = yield Database.AddGroup(data.groupname, session.username, cb);
-
-			Array.prototype.push.apply(group.members, data.members);
-			yield group.save(cb);
+			var [err, group] = yield Database.AddGroup(data.groupname, session.username, data.members, cb);
 
 			return socket.emit('group.add', {
 				err: null,
