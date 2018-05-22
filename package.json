@@ -1,5 +1,5 @@
-{
-  "name": "common-io",
+{ 
+  "name": "pigeons-chat",
   "version": "0.0.1",
   "main": "app.js",
   "dependencies": {
@@ -19,9 +19,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/evshiron/CommonIO/"
+    "url": "https://github.com/fancysherry/CommonIO/"
   },
-  "author": "evshiron",
+  "author": "fancysherry",
   "license": "MIT",
   "description": ""
 }
