@@ -1,0 +1,114 @@
+2018-10-22T23:20:41.070+0800 I CONTROL  [initandlisten] MongoDB starting : pid=30802 port=27017 dbpath=/Users/fancysherry/mongodata/db/ 64-bit host=ZEALOTCHEN-MB0
+2018-10-22T23:20:41.071+0800 I CONTROL  [initandlisten] db version v3.2.1
+2018-10-22T23:20:41.071+0800 I CONTROL  [initandlisten] git version: a14d55980c2cdc565d4704a7e3ad37e4e535c1b2
+2018-10-22T23:20:41.071+0800 I CONTROL  [initandlisten] allocator: system
+2018-10-22T23:20:41.071+0800 I CONTROL  [initandlisten] modules: none
+2018-10-22T23:20:41.071+0800 I CONTROL  [initandlisten] build environment:
+2018-10-22T23:20:41.071+0800 I CONTROL  [initandlisten]     distarch: x86_64
+2018-10-22T23:20:41.071+0800 I CONTROL  [initandlisten]     target_arch: x86_64
+2018-10-22T23:20:41.071+0800 I CONTROL  [initandlisten] options: { config: "/Users/fancysherry/mongodata/etc/mongo.conf", net: { http: { enabled: true }, port: 27017 }, processManagement: { fork: true }, storage: { dbPath: "/Users/fancysherry/mongodata/db/", journal: { enabled: true } }, systemLog: { destination: "file", logAppend: true, path: "/Users/fancysherry/mongodata/logs/mongodb.log", quiet: false } }
+2018-10-22T23:20:41.072+0800 I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=9G,session_max=20000,eviction=(threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000),checkpoint=(wait=60,log_size=2GB),statistics_log=(wait=0),
+2018-10-22T23:20:41.275+0800 I NETWORK  [websvr] admin web console waiting for connections on port 28017
+2018-10-22T23:20:41.275+0800 I NETWORK  [HostnameCanonicalizationWorker] Starting hostname canonicalization worker
+2018-10-22T23:20:41.275+0800 I FTDC     [initandlisten] Initializing full-time diagnostic data capture with directory '/Users/fancysherry/mongodata/db/diagnostic.data'
+2018-10-22T23:20:41.322+0800 I NETWORK  [initandlisten] waiting for connections on port 27017
+2018-10-22T23:20:41.325+0800 W NETWORK  [HostnameCanonicalizationWorker] Failed to obtain address information for hostname ZEALOTCHEN-MB0: nodename nor servname provided, or not known
+2018-10-22T23:22:34.557+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:55517 #1 (1 connection now open)
+2018-10-22T23:28:20.506+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:55574 #2 (2 connections now open)
+2018-10-22T23:28:21.025+0800 I NETWORK  [conn2] end connection 127.0.0.1:55574 (1 connection now open)
+2018-10-22T23:29:40.111+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:55586 #3 (2 connections now open)
+2018-10-22T23:32:18.923+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:55635 #4 (3 connections now open)
+2018-10-22T23:32:29.507+0800 I NETWORK  [conn4] end connection 127.0.0.1:55635 (2 connections now open)
+2018-10-22T23:32:29.514+0800 I NETWORK  [conn3] end connection 127.0.0.1:55586 (1 connection now open)
+2018-10-22T23:32:30.997+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:55642 #5 (2 connections now open)
+2018-10-22T23:32:38.563+0800 I NETWORK  [conn5] end connection 127.0.0.1:55642 (1 connection now open)
+2018-10-22T23:32:43.117+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:55645 #6 (2 connections now open)
+2018-10-22T23:32:54.441+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:55646 #7 (3 connections now open)
+2018-10-22T23:34:41.257+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:55668 #8 (4 connections now open)
+2018-10-22T23:36:39.557+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:55731 #9 (5 connections now open)
+2018-10-22T23:36:44.127+0800 I NETWORK  [conn9] end connection 127.0.0.1:55731 (4 connections now open)
+2018-10-22T23:36:44.134+0800 I NETWORK  [conn8] end connection 127.0.0.1:55668 (3 connections now open)
+2018-10-22T23:36:44.134+0800 I NETWORK  [conn6] end connection 127.0.0.1:55645 (3 connections now open)
+2018-10-22T23:36:44.134+0800 I NETWORK  [conn7] end connection 127.0.0.1:55646 (3 connections now open)
+2018-10-22T23:36:45.292+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:55734 #10 (2 connections now open)
+2018-10-22T23:42:00.635+0800 I NETWORK  [conn10] end connection 127.0.0.1:55734 (1 connection now open)
+2018-10-22T23:45:37.971+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:55955 #11 (2 connections now open)
+2018-10-22T23:48:31.398+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:56004 #12 (3 connections now open)
+2018-10-22T23:48:31.911+0800 I NETWORK  [conn12] end connection 127.0.0.1:56004 (2 connections now open)
+2018-10-22T23:48:45.550+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:56005 #13 (3 connections now open)
+2018-10-22T23:48:46.109+0800 I NETWORK  [conn13] end connection 127.0.0.1:56005 (2 connections now open)
+2018-10-22T23:49:53.827+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:56017 #14 (3 connections now open)
+2018-10-22T23:49:54.377+0800 I NETWORK  [conn14] end connection 127.0.0.1:56017 (2 connections now open)
+2018-10-22T23:55:14.233+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:56114 #15 (3 connections now open)
+2018-10-23T00:06:38.697+0800 I NETWORK  [conn15] end connection 127.0.0.1:56114 (2 connections now open)
+2018-10-23T00:06:39.567+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:56391 #16 (3 connections now open)
+2018-10-23T00:06:40.119+0800 I NETWORK  [conn16] end connection 127.0.0.1:56391 (2 connections now open)
+2018-10-23T00:06:59.294+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:56395 #17 (3 connections now open)
+2018-10-23T00:08:36.435+0800 I NETWORK  [conn17] end connection 127.0.0.1:56395 (2 connections now open)
+2018-10-23T00:08:37.299+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:56417 #18 (3 connections now open)
+2018-10-23T00:11:53.445+0800 I NETWORK  [conn18] end connection 127.0.0.1:56417 (2 connections now open)
+2018-10-23T00:11:54.483+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:56456 #19 (3 connections now open)
+2018-10-23T00:13:00.914+0800 I NETWORK  [conn19] end connection 127.0.0.1:56456 (2 connections now open)
+2018-10-23T00:13:01.828+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:56471 #20 (3 connections now open)
+2018-10-23T00:13:28.990+0800 I NETWORK  [conn20] end connection 127.0.0.1:56471 (2 connections now open)
+2018-10-23T00:13:29.960+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:56480 #21 (3 connections now open)
+2018-10-23T00:15:01.047+0800 I NETWORK  [conn21] end connection 127.0.0.1:56480 (2 connections now open)
+2018-10-23T00:15:01.915+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:56500 #22 (3 connections now open)
+2018-10-23T00:18:57.876+0800 I NETWORK  [conn22] end connection 127.0.0.1:56500 (2 connections now open)
+2018-10-23T00:18:58.727+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:56592 #23 (3 connections now open)
+2018-10-23T00:32:17.948+0800 I NETWORK  [conn23] end connection 127.0.0.1:56592 (2 connections now open)
+2018-10-23T00:32:19.034+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:57009 #24 (3 connections now open)
+2018-10-23T00:34:39.361+0800 I NETWORK  [conn24] end connection 127.0.0.1:57009 (2 connections now open)
+2018-10-23T00:34:40.172+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:57027 #25 (3 connections now open)
+2018-10-23T00:37:32.723+0800 I NETWORK  [conn25] end connection 127.0.0.1:57027 (2 connections now open)
+2018-10-23T00:37:34.014+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:57049 #26 (3 connections now open)
+2018-10-23T00:37:36.430+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:57051 #27 (4 connections now open)
+2018-10-23T00:38:28.891+0800 I NETWORK  [conn27] end connection 127.0.0.1:57051 (3 connections now open)
+2018-10-23T00:38:28.891+0800 I NETWORK  [conn26] end connection 127.0.0.1:57049 (2 connections now open)
+2018-10-23T00:38:29.922+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:57061 #28 (3 connections now open)
+2018-10-23T00:38:32.318+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:57063 #29 (4 connections now open)
+2018-10-28T18:16:00.159+0800 I NETWORK  [conn29] end connection 127.0.0.1:57063 (3 connections now open)
+2018-10-28T18:16:00.159+0800 I NETWORK  [conn28] end connection 127.0.0.1:57061 (3 connections now open)
+2018-10-28T18:16:01.701+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:57609 #30 (3 connections now open)
+2018-10-28T18:22:18.089+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:57648 #31 (4 connections now open)
+2018-11-25T17:19:35.690+0800 I CONTROL  [main] ***** SERVER RESTARTED *****
+2018-11-25T17:19:35.714+0800 I CONTROL  [initandlisten] MongoDB starting : pid=29795 port=27017 dbpath=/Users/fancysherry/mongodata/db/ 64-bit host=ZEALOTCHEN-MB0
+2018-11-25T17:19:35.714+0800 I CONTROL  [initandlisten] db version v3.2.1
+2018-11-25T17:19:35.714+0800 I CONTROL  [initandlisten] git version: a14d55980c2cdc565d4704a7e3ad37e4e535c1b2
+2018-11-25T17:19:35.714+0800 I CONTROL  [initandlisten] allocator: system
+2018-11-25T17:19:35.714+0800 I CONTROL  [initandlisten] modules: none
+2018-11-25T17:19:35.714+0800 I CONTROL  [initandlisten] build environment:
+2018-11-25T17:19:35.714+0800 I CONTROL  [initandlisten]     distarch: x86_64
+2018-11-25T17:19:35.714+0800 I CONTROL  [initandlisten]     target_arch: x86_64
+2018-11-25T17:19:35.714+0800 I CONTROL  [initandlisten] options: { config: "mongodata/etc/mongo.conf", net: { http: { enabled: true }, port: 27017 }, processManagement: { fork: true }, storage: { dbPath: "/Users/fancysherry/mongodata/db/", journal: { enabled: true } }, systemLog: { destination: "file", logAppend: true, path: "/Users/fancysherry/mongodata/logs/mongodb.log", quiet: false } }
+2018-11-25T17:19:35.715+0800 I -        [initandlisten] Detected data files in /Users/fancysherry/mongodata/db/ created by the 'wiredTiger' storage engine, so setting the active storage engine to 'wiredTiger'.
+2018-11-25T17:19:35.715+0800 W -        [initandlisten] Detected unclean shutdown - /Users/fancysherry/mongodata/db/mongod.lock is not empty.
+2018-11-25T17:19:35.715+0800 W STORAGE  [initandlisten] Recovering data from the last clean checkpoint.
+2018-11-25T17:19:35.715+0800 I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=9G,session_max=20000,eviction=(threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000),checkpoint=(wait=60,log_size=2GB),statistics_log=(wait=0),
+2018-11-25T17:19:36.072+0800 I NETWORK  [websvr] admin web console waiting for connections on port 28017
+2018-11-25T17:19:36.072+0800 I NETWORK  [HostnameCanonicalizationWorker] Starting hostname canonicalization worker
+2018-11-25T17:19:36.073+0800 I FTDC     [initandlisten] Initializing full-time diagnostic data capture with directory '/Users/fancysherry/mongodata/db/diagnostic.data'
+2018-11-25T17:19:36.074+0800 W NETWORK  [HostnameCanonicalizationWorker] Failed to obtain address information for hostname ZEALOTCHEN-MB0: nodename nor servname provided, or not known
+2018-11-25T17:19:36.074+0800 I NETWORK  [initandlisten] waiting for connections on port 27017
+2018-11-25T17:19:37.009+0800 I FTDC     [ftdc] Unclean full-time diagnostic data capture shutdown detected, found interim file, some metrics may have been lost. OK
+2018-11-25T17:19:50.128+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:60158 #1 (1 connection now open)
+2018-11-25T17:22:49.777+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:63084 #2 (2 connections now open)
+2018-11-25T17:22:49.800+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:63085 #3 (3 connections now open)
+2018-11-25T17:22:49.803+0800 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:63086 #4 (4 connections now open)
+2018-11-25T17:22:49.905+0800 I INDEX    [conn3] build index on: chat.groups properties: { v: 1, unique: true, key: { gid: 1 }, name: "gid_1", ns: "chat.groups", background: true }
+2018-11-25T17:22:49.999+0800 I INDEX    [conn2] build index on: chat.identitycounters properties: { v: 1, unique: true, key: { field: 1, model: 1 }, name: "field_1_model_1", ns: "chat.identitycounters", required: true, index: -1, background: true }
+2018-11-25T17:22:50.000+0800 I INDEX    [conn2] build index done.  scanned 0 total records. 0 secs
+2018-11-25T17:22:50.000+0800 I INDEX    [conn3] build index done.  scanned 0 total records. 0 secs
+2018-11-25T17:22:50.000+0800 I COMMAND  [conn4] command chat.identitycounters command: insert { insert: "identitycounters", documents: [ { model: "group", field: "gid", _id: ObjectId('5bfa69e941d2d8e8744eeca5'), count: -1, __v: 0 } ], ordered: false, writeConcern: { w: 1 } } ninserted:1 keyUpdates:0 writeConflicts:0 numYields:0 reslen:40 locks:{ Global: { acquireCount: { r: 1, w: 1 } }, Database: { acquireCount: { w: 1 }, acquireWaitCount: { w: 1 }, timeAcquiringMicros: { w: 181038 } }, Collection: { acquireCount: { w: 1 } } } protocol:op_query 181ms
+2018-11-25T17:22:50.000+0800 I COMMAND  [conn2] command chat.$cmd command: createIndexes { createIndexes: "identitycounters", indexes: [ { name: "field_1_model_1", key: { field: 1, model: 1 }, unique: true, required: true, index: -1, background: true } ], writeConcern: { w: 1 } } keyUpdates:0 writeConflicts:0 numYields:0 reslen:113 locks:{ Global: { acquireCount: { r: 1, w: 1 } }, Database: { acquireCount: { w: 1, W: 2 }, acquireWaitCount: { W: 2 }, timeAcquiringMicros: { W: 102981 } }, Collection: { acquireCount: { w: 1 } } } protocol:op_query 196ms
+2018-11-25T17:22:50.000+0800 I COMMAND  [conn3] command chat.$cmd command: createIndexes { createIndexes: "groups", indexes: [ { name: "gid_1", key: { gid: 1 }, unique: true, background: true } ], writeConcern: { w: 1 } } keyUpdates:0 writeConflicts:0 numYields:0 reslen:113 locks:{ Global: { acquireCount: { r: 1, w: 1 } }, Database: { acquireCount: { w: 1, W: 2 }, acquireWaitCount: { w: 1, W: 1 }, timeAcquiringMicros: { w: 91571, W: 209 } }, Collection: { acquireCount: { w: 1 } } } protocol:op_query 195ms
+2018-12-08T12:15:57.162+0800 I COMMAND  [ftdc] serverStatus was very slow: { after basic: 0, after asserts: 0, after connections: 0, after extra_info: 0, after globalLock: 0, after locks: 0, after network: 0, after opcounters: 0, after opcountersRepl: 0, after storageEngine: 0, after wiredTiger: 0, at end: 1010 }
+2018-12-08T16:43:25.635+0800 I NETWORK  [conn1] end connection 127.0.0.1:60158 (3 connections now open)
+2018-12-14T01:44:41.151+0800 I COMMAND  [ftdc] serverStatus was very slow: { after basic: 0, after asserts: 0, after connections: 0, after extra_info: 0, after globalLock: 1030, after locks: 1030, after network: 1030, after opcounters: 1030, after opcountersRepl: 1030, after storageEngine: 1030, after wiredTiger: 1030, at end: 1030 }
+2018-12-20T23:39:38.301+0800 I NETWORK  [conn3] end connection 127.0.0.1:63085 (2 connections now open)
+2018-12-20T23:39:38.301+0800 I NETWORK  [conn4] end connection 127.0.0.1:63086 (2 connections now open)
+2018-12-20T23:39:38.301+0800 I NETWORK  [conn2] end connection 127.0.0.1:63084 (2 connections now open)
+2018-12-26T22:48:43.157+0800 I COMMAND  [ftdc] serverStatus was very slow: { after basic: 0, after asserts: 0, after connections: 0, after extra_info: 0, after globalLock: 1010, after locks: 1010, after network: 1010, after opcounters: 1010, after opcountersRepl: 1010, after storageEngine: 1010, after wiredTiger: 1010, at end: 1010 }
+2019-01-16T23:06:36.148+0800 I COMMAND  [ftdc] serverStatus was very slow: { after basic: 0, after asserts: 0, after connections: 0, after extra_info: 0, after globalLock: 1040, after locks: 1040, after network: 1040, after opcounters: 1040, after opcountersRepl: 1040, after storageEngine: 1040, after wiredTiger: 1040, at end: 1040 }
+2019-01-22T00:44:30.150+0800 I COMMAND  [ftdc] serverStatus was very slow: { after basic: 0, after asserts: 0, after connections: 0, after extra_info: 0, after globalLock: 1030, after locks: 1030, after network: 1030, after opcounters: 1030, after opcountersRepl: 1030, after storageEngine: 1030, after wiredTiger: 1030, at end: 1030 }
+2019-02-02T21:07:54.480+0800 I COMMAND  [PeriodicTaskRunner] task: UnusedLockCleaner took: 224ms
