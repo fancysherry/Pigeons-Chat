@@ -1,4 +1,5 @@
-
+//use serve-static to load html
+//node --harmony_destructuring app.js
 var _path = require('path');
 var _fs = require('fs');
 var _crypto = require('crypto');

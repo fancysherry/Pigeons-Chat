@@ -1,0 +1,141 @@
+[2018-05-22 22:59:38.402] [INFO] http - HTTP server is listening at :8100.
+[2018-05-22 23:07:30.028] [INFO] http - HTTP server is listening at :8100.
+[2018-05-22 23:31:25.969] [INFO] http - HTTP server is listening at :8100.
+[2018-11-25 17:02:33.058] [INFO] http - HTTP server is listening at :8100.
+[2018-11-25 17:04:32.089] [INFO] http - HTTP server is listening at :8100.
+[2018-11-25 17:22:49.779] [INFO] http - HTTP server is listening at :8100.
+[2018-11-25 18:12:53.678] [INFO] io - User connected.
+[2018-11-25 18:14:49.702] [INFO] io - User connected.
+[2018-11-25 18:16:36.308] [INFO] io - User connected.
+[2018-11-25 18:17:01.967] [INFO] io - { description: '',
+  avatarUrl: '',
+  contactUsernames: [],
+  groupIds: [],
+  _id: 5bfa769d41d2d8e8744eeca6,
+  nickname: '梁佳林',
+  password: '111',
+  username: '111',
+  __v: 0 }
+[2018-11-25 18:17:55.054] [INFO] io - User disconnected.
+[2018-11-25 18:19:20.145] [INFO] io - User connected.
+[2018-11-25 18:19:41.541] [INFO] io - User disconnected.
+[2018-11-25 18:19:44.924] [INFO] io - User connected.
+[2018-11-25 18:19:51.584] [INFO] io - { description: '',
+  avatarUrl: '',
+  contactUsernames: [],
+  groupIds: [],
+  _id: 5bfa774741d2d8e8744eeca7,
+  nickname: '梁佳林',
+  password: '222',
+  username: '222',
+  __v: 0 }
+[2018-11-25 18:20:45.282] [INFO] io - User disconnected.
+[2018-11-25 18:29:26.657] [INFO] io - User disconnected.
+[2018-11-25 18:29:26.663] [INFO] io - User connected.
+[2018-11-25 18:29:33.932] [INFO] io - User connected.
+[2018-11-25 18:30:51.794] [INFO] io - User disconnected.
+[2018-11-25 18:31:07.218] [INFO] io - User disconnected.
+[2018-11-25 18:31:13.354] [INFO] io - User connected.
+[2018-11-25 18:31:24.827] [INFO] io - User disconnected.
+[2018-11-25 18:31:26.040] [INFO] io - User connected.
+[2018-11-25 18:42:06.986] [INFO] io - User disconnected.
+[2018-11-28 01:12:40.951] [INFO] io - User connected.
+[2018-11-28 01:22:39.515] [INFO] io - User connected.
+[2018-11-28 01:32:38.498] [INFO] io - User connected.
+[2018-11-28 01:33:11.942] [INFO] io - User disconnected.
+[2018-11-28 01:42:37.588] [INFO] io - User connected.
+[2018-11-28 01:43:10.218] [INFO] io - User disconnected.
+[2018-11-28 01:52:40.106] [INFO] io - User connected.
+[2018-11-28 01:53:09.043] [INFO] io - User disconnected.
+[2018-11-28 02:02:36.578] [INFO] io - User connected.
+[2018-11-28 02:03:09.528] [INFO] io - User disconnected.
+[2018-11-28 02:12:38.036] [INFO] io - User connected.
+[2018-11-28 02:22:34.170] [INFO] io - User disconnected.
+[2018-11-28 02:22:34.520] [INFO] io - User connected.
+[2018-11-28 02:23:07.139] [INFO] io - User disconnected.
+[2018-11-28 02:32:35.371] [INFO] io - User connected.
+[2018-11-28 02:42:32.182] [INFO] io - User disconnected.
+[2018-11-28 02:42:35.116] [INFO] io - User connected.
+[2018-11-28 02:43:05.787] [INFO] io - User disconnected.
+[2018-11-28 02:52:34.162] [INFO] io - User connected.
+[2018-11-28 02:53:06.592] [INFO] io - User disconnected.
+[2018-11-28 03:02:32.423] [INFO] io - User connected.
+[2018-11-28 03:12:29.183] [INFO] io - User disconnected.
+[2018-11-28 03:12:30.888] [INFO] io - User connected.
+[2018-11-28 03:13:04.991] [INFO] io - User disconnected.
+[2018-11-28 03:22:29.434] [INFO] io - User connected.
+[2018-11-28 03:23:03.791] [INFO] io - User disconnected.
+[2018-11-28 03:32:28.495] [INFO] io - User connected.
+[2018-11-28 03:33:02.276] [INFO] io - User disconnected.
+[2018-11-28 03:42:32.041] [INFO] io - User connected.
+[2018-11-28 03:43:00.731] [INFO] io - User disconnected.
+[2018-11-28 03:52:27.567] [INFO] io - User connected.
+[2018-11-28 03:52:59.759] [INFO] io - User disconnected.
+[2018-11-28 04:02:31.500] [INFO] io - User connected.
+[2018-11-28 04:12:26.180] [INFO] io - User disconnected.
+[2018-11-28 04:12:31.396] [INFO] io - User connected.
+[2018-11-28 04:12:58.404] [INFO] io - User disconnected.
+[2018-11-28 04:22:28.288] [INFO] io - User connected.
+[2018-11-28 04:32:24.188] [INFO] io - User disconnected.
+[2018-11-28 04:32:26.488] [INFO] io - User connected.
+[2018-11-28 04:42:23.182] [INFO] io - User disconnected.
+[2018-11-28 04:42:23.608] [INFO] io - User connected.
+[2018-11-28 04:42:58.920] [INFO] io - User disconnected.
+[2018-11-28 04:52:25.658] [INFO] io - User connected.
+[2018-11-28 04:52:57.170] [INFO] io - User disconnected.
+[2018-11-28 05:02:24.620] [INFO] io - User connected.
+[2018-11-28 05:02:55.430] [INFO] io - User disconnected.
+[2018-11-28 05:12:21.427] [INFO] io - User connected.
+[2018-11-28 05:22:20.278] [INFO] io - User disconnected.
+[2018-11-28 05:22:23.071] [INFO] io - User connected.
+[2018-11-28 05:22:55.736] [INFO] io - User disconnected.
+[2018-11-28 05:32:24.547] [INFO] io - User connected.
+[2018-11-28 05:32:52.066] [INFO] io - User disconnected.
+[2018-11-28 05:42:19.613] [INFO] io - User connected.
+[2018-11-28 05:42:54.285] [INFO] io - User disconnected.
+[2018-11-28 05:52:18.511] [INFO] io - User connected.
+[2018-11-28 06:02:17.179] [INFO] io - User disconnected.
+[2018-11-28 06:02:17.425] [INFO] io - User connected.
+[2018-11-28 06:02:51.014] [INFO] io - User disconnected.
+[2018-11-28 06:12:16.962] [INFO] io - User connected.
+[2018-11-28 06:12:48.810] [INFO] io - User disconnected.
+[2018-11-28 06:22:17.683] [INFO] io - User connected.
+[2018-11-28 06:22:47.725] [INFO] io - User disconnected.
+[2018-11-28 06:32:13.525] [INFO] io - User connected.
+[2018-11-28 06:32:47.863] [INFO] io - User disconnected.
+[2018-11-28 06:42:12.494] [INFO] io - User connected.
+[2018-11-28 06:52:11.184] [INFO] io - User disconnected.
+[2018-11-28 06:52:11.436] [INFO] io - User connected.
+[2018-11-28 06:52:44.080] [INFO] io - User disconnected.
+[2018-11-28 07:02:14.531] [INFO] io - User connected.
+[2018-11-28 07:02:43.732] [INFO] io - User disconnected.
+[2018-11-28 07:12:16.296] [INFO] io - User connected.
+[2018-11-28 07:12:43.352] [INFO] io - User disconnected.
+[2018-11-28 07:22:11.514] [INFO] io - User connected.
+[2018-11-28 07:22:45.842] [INFO] io - User disconnected.
+[2018-11-28 07:32:14.059] [INFO] io - User connected.
+[2018-11-28 07:42:09.198] [INFO] io - User disconnected.
+[2018-11-28 07:42:12.106] [INFO] io - User connected.
+[2018-11-28 07:42:42.407] [INFO] io - User disconnected.
+[2018-11-28 07:52:09.995] [INFO] io - User connected.
+[2018-11-28 08:02:07.199] [INFO] io - User disconnected.
+[2018-11-28 08:02:10.565] [INFO] io - User connected.
+[2018-11-28 08:12:06.169] [INFO] io - User disconnected.
+[2018-11-28 08:12:07.244] [INFO] io - User connected.
+[2018-11-28 08:12:40.776] [INFO] io - User disconnected.
+[2018-11-28 08:22:05.501] [INFO] io - User connected.
+[2018-11-28 08:32:04.176] [INFO] io - User disconnected.
+[2018-11-28 08:32:07.333] [INFO] io - User connected.
+[2018-11-28 08:32:38.120] [INFO] io - User disconnected.
+[2018-11-28 08:42:08.711] [INFO] io - User connected.
+[2018-11-28 08:42:37.020] [INFO] io - User disconnected.
+[2018-11-28 08:52:09.692] [INFO] io - User connected.
+[2018-11-28 08:52:38.705] [INFO] io - User disconnected.
+[2018-11-28 09:02:09.507] [INFO] io - User connected.
+[2018-11-28 09:12:01.186] [INFO] io - User disconnected.
+[2018-11-28 09:12:15.418] [INFO] io - User disconnected.
+[2018-11-28 09:22:15.331] [INFO] io - User disconnected.
+[2018-12-06 01:00:02.669] [INFO] io - User connected.
+[2018-12-06 01:00:06.740] [INFO] io - User disconnected.
+[2018-12-11 09:04:52.801] [INFO] io - User connected.
+[2018-12-11 09:25:23.780] [INFO] io - User disconnected.
