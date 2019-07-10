@@ -1,7 +1,7 @@
 package com.crossoverjie.cim.server.server;
 
-import com.crossoverjie.cim.common.constant.Constants;
-import com.crossoverjie.cim.common.protocol.CIMRequestProto;
+import com.fancysherry.im.common.constant.Constants;
+import com.fancysherry.im.common.protocol.CIMRequestProto;
 import com.crossoverjie.cim.server.init.CIMServerInitializer;
 import com.crossoverjie.cim.server.util.SessionSocketHolder;
 import com.crossoverjie.cim.server.vo.req.SendMsgReqVO;

@@ -1,8 +1,8 @@
 package com.crossoverjie.cim.client.config;
 
 import com.crossoverjie.cim.client.handle.MsgHandleCaller;
-import com.crossoverjie.cim.common.constant.Constants;
-import com.crossoverjie.cim.common.protocol.CIMRequestProto;
+import com.fancysherry.im.common.constant.Constants;
+import com.fancysherry.im.common.protocol.CIMRequestProto;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import okhttp3.OkHttpClient;
 import org.slf4j.Logger;

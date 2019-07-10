@@ -1,6 +1,6 @@
 package com.crossoverjie.cim.server.init;
 
-import com.crossoverjie.cim.common.protocol.CIMRequestProto;
+import com.fancysherry.im.common.protocol.CIMRequestProto;
 import com.crossoverjie.cim.server.handle.CIMServerHandle;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;

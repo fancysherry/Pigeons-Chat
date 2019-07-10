@@ -1,19 +1,17 @@
-package com.crossoverjie.cim.client.vo.req;
-
-import com.fancysherry.im.common.req.BaseRequest;
+package com.fancysherry.im.common.pojo;
 
 /**
- * Function:
+ * Function: 用户信息
  *
  * @author crossoverJie
- *         Date: 2018/12/23 22:30
+ *         Date: 2018/12/24 02:33
  * @since JDK 1.8
  */
-public class LoginReqVO extends BaseRequest{
+public class CIMUserInfo {
     private Long userId ;
     private String userName ;
 
-    public LoginReqVO(Long userId, String userName) {
+    public CIMUserInfo(Long userId, String userName) {
         this.userId = userId;
         this.userName = userName;
     }
@@ -36,9 +34,9 @@ public class LoginReqVO extends BaseRequest{
 
     @Override
     public String toString() {
-        return "LoginReqVO{" +
+        return "CIMUserInfo{" +
                 "userId=" + userId +
                 ", userName='" + userName + '\'' +
-                "} " + super.toString();
+                '}';
     }
 }

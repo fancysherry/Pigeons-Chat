@@ -1,8 +1,8 @@
 package com.crossoverjie.cim.route.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.crossoverjie.cim.common.exception.CIMException;
-import com.crossoverjie.cim.common.pojo.CIMUserInfo;
+import com.fancysherry.im.common.exception.CIMException;
+import com.fancysherry.im.common.pojo.CIMUserInfo;
 import com.crossoverjie.cim.route.service.AccountService;
 import com.crossoverjie.cim.route.service.UserInfoCacheService;
 import com.crossoverjie.cim.route.vo.req.ChatReqVO;
@@ -24,7 +24,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.crossoverjie.cim.common.enums.StatusEnum.OFF_LINE;
+import static com.fancysherry.im.common.enums.StatusEnum.OFF_LINE;
 import static com.crossoverjie.cim.route.constant.Constant.ACCOUNT_PREFIX;
 import static com.crossoverjie.cim.route.constant.Constant.ROUTE_PREFIX;
 

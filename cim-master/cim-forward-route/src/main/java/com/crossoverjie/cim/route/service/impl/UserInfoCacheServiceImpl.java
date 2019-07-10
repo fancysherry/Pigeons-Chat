@@ -1,6 +1,6 @@
 package com.crossoverjie.cim.route.service.impl;
 
-import com.crossoverjie.cim.common.pojo.CIMUserInfo;
+import com.fancysherry.im.common.pojo.CIMUserInfo;
 import com.crossoverjie.cim.route.service.UserInfoCacheService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;

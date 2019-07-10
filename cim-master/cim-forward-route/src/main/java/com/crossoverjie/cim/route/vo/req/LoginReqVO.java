@@ -1,6 +1,6 @@
 package com.crossoverjie.cim.route.vo.req;
 
-import com.crossoverjie.cim.common.req.BaseRequest;
+import com.fancysherry.im.common.req.BaseRequest;
 
 /**
  * Function:

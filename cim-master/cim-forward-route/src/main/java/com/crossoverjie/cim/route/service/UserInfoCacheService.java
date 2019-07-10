@@ -1,6 +1,6 @@
 package com.crossoverjie.cim.route.service;
 
-import com.crossoverjie.cim.common.pojo.CIMUserInfo;
+import com.fancysherry.im.common.pojo.CIMUserInfo;
 
 import java.util.Set;
 

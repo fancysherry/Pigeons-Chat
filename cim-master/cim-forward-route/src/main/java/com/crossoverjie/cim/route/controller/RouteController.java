@@ -1,10 +1,10 @@
 package com.crossoverjie.cim.route.controller;
 
-import com.crossoverjie.cim.common.enums.StatusEnum;
-import com.crossoverjie.cim.common.exception.CIMException;
-import com.crossoverjie.cim.common.pojo.CIMUserInfo;
-import com.crossoverjie.cim.common.res.BaseResponse;
-import com.crossoverjie.cim.common.res.NULLBody;
+import com.fancysherry.im.common.enums.StatusEnum;
+import com.fancysherry.im.common.exception.CIMException;
+import com.fancysherry.im.common.pojo.CIMUserInfo;
+import com.fancysherry.im.common.res.BaseResponse;
+import com.fancysherry.im.common.res.NULLBody;
 import com.crossoverjie.cim.route.cache.ServerCache;
 import com.crossoverjie.cim.route.service.AccountService;
 import com.crossoverjie.cim.route.service.UserInfoCacheService;

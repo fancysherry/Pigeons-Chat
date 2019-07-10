@@ -1,8 +1,8 @@
 package com.crossoverjie.cim.client.handle;
 
 import com.crossoverjie.cim.client.util.SpringBeanFactory;
-import com.crossoverjie.cim.common.protocol.CIMRequestProto;
-import com.crossoverjie.cim.common.protocol.CIMResponseProto;
+import com.fancysherry.im.common.protocol.CIMRequestProto;
+import com.fancysherry.im.common.protocol.CIMResponseProto;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;

@@ -1,7 +1,7 @@
 package com.crossoverjie.cim.client.init;
 
 import com.crossoverjie.cim.client.handle.CIMClientHandle;
-import com.crossoverjie.cim.common.protocol.CIMResponseProto;
+import com.fancysherry.im.common.protocol.CIMResponseProto;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;

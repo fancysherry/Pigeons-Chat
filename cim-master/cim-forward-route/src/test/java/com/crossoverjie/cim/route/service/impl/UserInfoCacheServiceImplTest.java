@@ -1,7 +1,7 @@
 package com.crossoverjie.cim.route.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.crossoverjie.cim.common.pojo.CIMUserInfo;
+import com.fancysherry.im.common.pojo.CIMUserInfo;
 import com.crossoverjie.cim.route.RouteApplication;
 import com.crossoverjie.cim.route.service.UserInfoCacheService;
 import org.junit.Test;

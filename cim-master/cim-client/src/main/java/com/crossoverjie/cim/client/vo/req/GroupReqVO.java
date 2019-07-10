@@ -1,6 +1,6 @@
 package com.crossoverjie.cim.client.vo.req;
 
-import com.crossoverjie.cim.common.req.BaseRequest;
+import com.fancysherry.im.common.req.BaseRequest;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;

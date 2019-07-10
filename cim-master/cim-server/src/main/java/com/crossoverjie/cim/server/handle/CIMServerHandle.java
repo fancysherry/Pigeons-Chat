@@ -1,10 +1,10 @@
 package com.crossoverjie.cim.server.handle;
 
 import com.alibaba.fastjson.JSONObject;
-import com.crossoverjie.cim.common.constant.Constants;
-import com.crossoverjie.cim.common.exception.CIMException;
-import com.crossoverjie.cim.common.pojo.CIMUserInfo;
-import com.crossoverjie.cim.common.protocol.CIMRequestProto;
+import com.fancysherry.im.common.constant.Constants;
+import com.fancysherry.im.common.exception.CIMException;
+import com.fancysherry.im.common.pojo.CIMUserInfo;
+import com.fancysherry.im.common.protocol.CIMRequestProto;
 import com.crossoverjie.cim.server.config.AppConfiguration;
 import com.crossoverjie.cim.server.util.SessionSocketHolder;
 import com.crossoverjie.cim.server.util.SpringBeanFactory;
